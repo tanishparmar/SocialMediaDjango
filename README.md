@@ -1,5 +1,5 @@
 # SocialMediaDjango
 
-#To do
+# To do
 
-#Implemented
+# Implemented
