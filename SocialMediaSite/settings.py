@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "home",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'SocialMediaSite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,13 +75,13 @@ WSGI_APPLICATION = 'SocialMediaSite.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
+    "default": {
+        "ENGINE": "djongo",
         "CLIENT": {
-            'name': 'InvoiceManagementDB',
-            'host': 'mongodb+srv://TheGreatVAPpy:gs6Z7D5Uu0bobsmg@cluster0.xz3j1.mongodb.net/InvoiceManagementDB?retryWrites=true&w=majority',
+            'name': 'SocailMediaSiteDB',
+            'host': 'mongodb+srv://TheGreatVAPpy:oxQTBrfDG9zss67p@cluster0.xz3j1.mongodb.net/SocailMediaSiteDB?retryWrites=true&w=majority',
             'username': 'TheGreatVAPpy',
-            'password': 'gs6Z7D5Uu0bobsmg',
+            'password': 'oxQTBrfDG9zss67p',
             "authMechanism": "SCRAM-SHA-1",
         },
     }
@@ -124,7 +125,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "assets")
