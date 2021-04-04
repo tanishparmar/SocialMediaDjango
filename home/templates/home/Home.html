@@ -1,8 +1,5 @@
 {%extends "home/base.html"%}
 {%block content%}
-{%if user.is_authenticated%}
-<h1>Logged In User!!</h1>
-{%else%}
 <div class="container home">
     <div class="row">
         <div class="col-lg-10 col-xl-9 mx-auto">
@@ -63,7 +60,7 @@
                         <div class="form-label-group">
                             <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password"
                                 required name="confirmPassword">
-                            <label for="inputConfirmPassword">Confirm password</label>
+                            <label for="inputConfirmPassword">Confirm Password</label>
                         </div>
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
                             name="Register">Register</button>
@@ -105,5 +102,4 @@
         </div>
     </div>
 </div>
-{%endif%}
 {%endblock%}
