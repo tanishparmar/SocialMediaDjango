@@ -1,5 +1,7 @@
 from djongo import models
+from django.contrib.auth.hashers import make_password
 import uuid
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
@@ -20,12 +22,12 @@ class Dislike_Tags(models.Model):
         return(self.tag)
 
 
-class User(models.Model):
+class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    full_name = models.CharField(max_length=200, null=True)
-    username = models.CharField(max_length=200)
-    url = models.CharField(max_length=200)
-    securepassw = models.CharField(max_length=500)
+    username = models.CharField(max_length=200, unique=True)
+    url = models.CharField(max_length=200, unique=True)
+    email = models.CharField(max_length=100, null=True)
+    password = models.CharField(max_length=500)
     like_tags = models.ManyToManyField(Like_Tags)
     dislike_tags = models.ManyToManyField(Dislike_Tags)
     friends = models.ManyToManyField("self", symmetrical=True)
@@ -56,7 +58,8 @@ class Comment(models.Model):
                           default=uuid.uuid4, editable=False)
     creator = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True)
-    parent_post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    parent_post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, null=True)
     createdTime = models.DateTimeField(auto_now_add=True)
     updatedTime = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=500, null=True)

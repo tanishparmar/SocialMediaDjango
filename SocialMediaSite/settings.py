@@ -126,3 +126,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "/assets"
+
+AUTH_USER_MODEL = 'home.User'

@@ -1,5 +1,8 @@
 {%extends "home/base.html"%}
 {%block content%}
+{%if user.is_authenticated%}
+<h1>Logged In User!!</h1>
+{%else%}
 <div class="container home">
     <div class="row">
         <div class="col-lg-10 col-xl-9 mx-auto">
@@ -7,52 +10,74 @@
                 <div class="card-img-left d-none d-md-flex">
                     <!-- Background image for card set in CSS! -->
                 </div>
-                <div class="card-body">
+                <div class="card-body" method="POST">
                     {%if register == True%}
                     <h5 class="card-title text-center">Register</h5>
                     {%else%}
                     <h5 class="card-title text-center">Sign In</h5>
                     {%endif%}
-                    <form class="form-signin">
+                    <form class="form-signin" method="POST">
                         {% csrf_token %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="errornote">{{ message }}</p>
+                        {% endfor %}
+                        {% endif %}
+                        {%if register == True%}
+                        <div class=" form-label-group">
+                            <input type="text" id="inputFirstName" class="form-control" placeholder="First Name"
+                                required autofocus name="first_name">
+                            <label for="inputFirstName">First Name</label>
+                        </div>
+                        {%endif%}
 
                         {%if register == True%}
                         <div class="form-label-group">
-                            <input type="text" id="inputUserame" class="form-control" placeholder="Full Name" required
-                                autofocus>
-                            <label for="inputUserame">Name</label>
+                            <input type="text" id="inputLastName" class="form-control" placeholder="Last Name" required
+                                autofocus name="last_name">
+                            <label for="inputLastName">Last Name</label>
+                        </div>
+                        {%endif%}
+
+                        {%if register == True%}
+                        <div class="form-label-group">
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email Address"
+                                required autofocus name="email">
+                            <label for="inputEmail">Email Address</label>
                         </div>
                         {%endif%}
 
                         <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-                                required>
-                            <label for="inputEmail">Email address</label>
+                            <input type="text" id="inputUsername" class="form-control" placeholder="Username" required
+                                name="username">
+                            <label for="inputUsername">Username</label>
                         </div>
 
                         <div class="form-label-group">
                             <input type="password" id="inputPassword" class="form-control" placeholder="Password"
-                                required>
+                                required name="password">
                             <label for="inputPassword">Password</label>
                         </div>
 
                         {%if register == True%}
                         <div class="form-label-group">
                             <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password"
-                                required>
+                                required name="confirmPassword">
                             <label for="inputConfirmPassword">Confirm password</label>
                         </div>
-                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
+                            name="Register">Register</button>
                         {%else%}
-                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign In</button>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="Signin">Sign
+                            In</button>
                         {%endif%}
                     </form>
                     {%if register == True%}
                     <form action="" method="POST">
                         {% csrf_token %}
                         <input type="hidden" value=False name="register">
-                        <button class="btn btn-lg btn-warning btn-block text-uppercase" margin-top=1rem
-                            type=submit>Already Have an
+                        <button class="btn btn-lg btn-warning btn-block text-uppercase" margin-top=1rem type=submit
+                            name="Change">Already Have an
                             Account?
                             Sign In.</button>
                     </form>
@@ -60,8 +85,8 @@
                     <form action="" method="POST">
                         {% csrf_token %}
                         <input type="hidden" value=True name="register">
-                        <button class="btn btn-lg btn-warning btn-block text-uppercase" margin-top=1rem
-                            type=submit>Don't Have an
+                        <button class="btn btn-lg btn-warning btn-block text-uppercase" margin-top=1rem type=submit
+                            name="Change">Don't Have an
                             Account?
                             Register.</button>
                     </form>
@@ -80,4 +105,5 @@
         </div>
     </div>
 </div>
+{%endif%}
 {%endblock%}
