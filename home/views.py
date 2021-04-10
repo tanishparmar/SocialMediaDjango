@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import User
+from .models import User, Post
 from django.contrib import auth
 from django.contrib import messages
 import string
@@ -44,7 +44,7 @@ def home(request):
                         user.set_password(password)
                         user.save()
                         register = False
-                        return render(request, "home/home.html", {"register": register})
+                        return render(request, "home/home.html", {"register": register, "title": "Home"})
                 else:
                     messages.error(
                         request, "Passwords don't match. User Not Created.")
@@ -57,7 +57,7 @@ def home(request):
                     return redirect("/wall")
                 else:
                     messages.error(request, "Invalid Credentials.")
-        return render(request, "home/home.html", {"register": register})
+        return render(request, "home/home.html", {"register": register, "title": "Home"})
 
 
 def logout(request):
@@ -65,5 +65,29 @@ def logout(request):
     return redirect("/")
 
 
+def create(request):
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+        url = "".join(random.choices(
+            string.ascii_uppercase+string.digits, k=10))
+        while User.objects.filter(url=url).exists():
+            url = "".join(random.choices(
+                string.ascii_letters+string.digits, k=10))
+        post = Post.objects.create(
+            title=title, content=content, creator=request.user, url=url)
+        return redirect("/wall")
+    return render(request, "home/Create.html", {"title": "Create Post"})
+
+
 def wall(request):
-    return render(request, "home/wall.html")
+    your_posts = request.user.post_set.all()
+    if len(your_posts) == 0:
+        messages.error(
+            request, "You have no posts yet. Create your First Post")
+        return redirect("/create")
+    return render(request, "home/Wall.html", {"your_posts": your_posts, "title": "Your Wall"})
+
+
+def view_404(request, *args, **kwargs):
+    return render(request, "home/404.html", {"title": "404 Error"})

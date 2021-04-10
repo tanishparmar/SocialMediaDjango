@@ -38,12 +38,12 @@ class User(AbstractUser):
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    url = models.CharField(max_length=200, unique=True)
     createdTime = models.DateTimeField(auto_now_add=True)
     updatedTime = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, null=True)
     content = models.CharField(max_length=500, null=True)
-    creator = models.OneToOneField(
-        User, on_delete=models.CASCADE, null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     # image/s(optional)[One to Many]
