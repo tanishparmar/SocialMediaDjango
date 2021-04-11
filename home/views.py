@@ -44,7 +44,7 @@ def home(request):
                         user.set_password(password)
                         user.save()
                         register = False
-                        return render(request, "home/home.html", {"register": register, "title": "Home"})
+                        return render(request, "home/Home.html", {"register": register, "title": "Home"})
                 else:
                     messages.error(
                         request, "Passwords don't match. User Not Created.")
@@ -57,7 +57,7 @@ def home(request):
                     return redirect("/wall")
                 else:
                     messages.error(request, "Invalid Credentials.")
-        return render(request, "home/home.html", {"register": register, "title": "Home"})
+        return render(request, "home/Home.html", {"register": register, "title": "Home"})
 
 
 def logout(request):

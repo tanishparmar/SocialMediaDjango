@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4k%7!z!&hl7+k!$^ce(^43jzm8at6(xb(l=4j+$o**7@!4ko7@'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,15 +73,17 @@ WSGI_APPLICATION = 'SocialMediaSite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+MONGODB_USERNAME = os.environ.get("MONGODB_USERNAME")
+MONGODB_PASS = os.environ.get("MONGODB_PASS")
 
 DATABASES = {
     "default": {
         "ENGINE": "djongo",
         "CLIENT": {
             'name': 'SocailMediaSiteDB',
-            'host': 'mongodb+srv://TheGreatVAPpy:oxQTBrfDG9zss67p@cluster0.xz3j1.mongodb.net/SocailMediaSiteDB?retryWrites=true&w=majority',
-            'username': 'TheGreatVAPpy',
-            'password': 'oxQTBrfDG9zss67p',
+            'host': 'mongodb+srv://'+MONGODB_USERNAME+':'+MONGODB_PASS+'@cluster0.xz3j1.mongodb.net/SocailMediaSiteDB?retryWrites=true&w=majority',
+            'username': MONGODB_USERNAME,
+            'password': MONGODB_PASS,
             "authMechanism": "SCRAM-SHA-1",
         },
     }
