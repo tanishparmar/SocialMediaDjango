@@ -1,0 +1,13 @@
+{%extends "home/base.html"%}
+{%block content%}
+<h1 class="bg-light text-dark">Title : {{post.title}}</h1>
+<p class="card-text">Created By : {{post.creator.username}}</p>
+<small class="text-muted">Last updated {{post.updatedTime|timesince}}
+    ago</small>
+<br>
+<small class="text-muted">Created On
+    {{post.createdTime|date:"DATETIME_FORMAT"}}
+    ago</small>
+<h2>Content : </h2>
+<h3>{{post.content}}</h3>
+{%endblock%}

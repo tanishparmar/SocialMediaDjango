@@ -71,7 +71,7 @@ def create(request):
         content = request.POST["content"]
         url = "".join(random.choices(
             string.ascii_uppercase+string.digits, k=10))
-        while User.objects.filter(url=url).exists():
+        while Post.objects.filter(url=url).exists():
             url = "".join(random.choices(
                 string.ascii_letters+string.digits, k=10))
         post = Post.objects.create(
@@ -91,3 +91,20 @@ def wall(request):
 
 def view_404(request, *args, **kwargs):
     return render(request, "home/404.html", {"title": "404 Error"})
+
+
+def user_pages(request, user_slug):
+    user = User.objects.get(url=user_slug)
+    user_posts = user.post_set.all()
+    return render(request, "home/User.html", {"title":user.username,"user": user, "posts": user_posts})
+
+
+def post_pages(request, post_slug):
+    post = Post.objects.get(url=post_slug)
+    return render(request, "home/Post.html", {"title":post.title[:10], "post": post})
+
+def search(request):
+    q = request.GET["q"]
+    users = User.objects.filter(username__iexact=q) | User.objects.filter(first_name__iexact=q) | User.objects.filter(last_name__iexact=q) | User.objects.filter(email__iexact=q) | User.objects.filter(url__iexact=q) | User.objects.filter(
+        username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)
+    return render(request, "home/Search.html", {"title": "Search", "query": q, "result": users})
