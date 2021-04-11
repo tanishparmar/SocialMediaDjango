@@ -82,6 +82,8 @@ def create(request):
 
 def wall(request):
     your_posts = request.user.post_set.all()
+    for user in request.user.friends.all():
+        your_posts=your_posts|user.post_set.all()
     if len(your_posts) == 0:
         messages.error(
             request, "You have no posts yet. Create your First Post")
@@ -95,8 +97,22 @@ def view_404(request, *args, **kwargs):
 
 def user_pages(request, user_slug):
     user = User.objects.get(url=user_slug)
+    is_friend=False
+    if user != request.user:
+        friend=True
+        if user in request.user.friends.all() :
+            is_friend=True
+        else:
+            is_friend=False
+    else:
+        friend=False
     user_posts = user.post_set.all()
-    return render(request, "home/User.html", {"title":user.username,"user": user, "posts": user_posts})
+    followers=0
+    for user_guy in User.objects.all():
+        if user in user_guy.friends.all():
+            followers+=1
+    follows=len(user.friends.all())
+    return render(request, "home/User.html", {"title":user.username,"this_user": user, "posts": user_posts,"friend":friend,"is_friend":is_friend,"followers":followers,"follows":follows})
 
 
 def post_pages(request, post_slug):
@@ -108,3 +124,13 @@ def search(request):
     users = User.objects.filter(username__iexact=q) | User.objects.filter(first_name__iexact=q) | User.objects.filter(last_name__iexact=q) | User.objects.filter(email__iexact=q) | User.objects.filter(url__iexact=q) | User.objects.filter(
         username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)
     return render(request, "home/Search.html", {"title": "Search", "query": q, "result": users})
+
+def friend(request):
+    username=request.POST["friend"]
+    request.user.friends.add(User.objects.get(username=username))
+    return redirect("/u/"+User.objects.get(username=username).url)
+
+def unfriend(request):
+    username=request.POST["friend"]
+    request.user.friends.remove(User.objects.get(username=username))
+    return redirect("/u/"+User.objects.get(username=username).url)

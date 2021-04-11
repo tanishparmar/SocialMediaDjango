@@ -17,7 +17,7 @@
 
 <body>
     {%include "home/Navbar.html"%}
-    <div class="bg-light text-dark">
+    <div {%if title != "Home"%}class="bg-light text-dark"{%endif%}>
         {%block content%}
         {%endblock%}
     </div>

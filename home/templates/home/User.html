@@ -1,9 +1,26 @@
 {%extends "home/base.html"%}
 {%block content%}
-<h1 class="bg-light text-dark">Username : {{user.username}}</h1>
-<h1 class="bg-light text-dark">First Name : {{user.first_name}}</h1>
-<h1 class="bg-light text-dark">Last Name : {{user.last_name}}</h1>
-<h1 class="bg-light text-dark">Email : {{user.email}}</h1>
+<h1 class="bg-light text-dark">Username : {{this_user.username}}</h1>
+<h1 class="bg-light text-dark">First Name : {{this_user.first_name}}</h1>
+<h1 class="bg-light text-dark">Last Name : {{this_user.last_name}}</h1>
+<h1 class="bg-light text-dark">Email : {{this_user.email}}</h1>
+<h1 class="bg-light text-dark">Followers : {{followers}}</h1>
+<h1 class="bg-light text-dark">Follows : {{follows}}</h1>
+{%if friend%}
+{%if not is_friend%}
+<form action="/friend/" method="post">
+    {% csrf_token %}
+    <input type="hidden" value="{{this_user.username}}" name="friend">
+    <button type="submit" class="btn btn-primary">Follow</button>
+</form>
+{%else%}
+<form action="/unfriend/" method="post">
+    {% csrf_token %}
+    <input type="hidden" value="{{this_user.username}}" name="friend">
+    <button type="submit" class="btn btn-danger">Unfollow</button>
+</form>
+{%endif%}
+{%endif%}
 <br>
 <h1 class="bg-light text-dark">POSTS</h1>
 <div class="row row-cols-1 row-cols-md-3 g-4">

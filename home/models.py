@@ -30,7 +30,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=500)
     like_tags = models.ManyToManyField(Like_Tags)
     dislike_tags = models.ManyToManyField(Dislike_Tags)
-    friends = models.ManyToManyField("self", symmetrical=True)
+    friends = models.ManyToManyField("self", symmetrical=False)
 
     def __str__(self):
         return(self.username)
