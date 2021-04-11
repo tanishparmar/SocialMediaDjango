@@ -25,7 +25,7 @@ SECRET_KEY = '4k%7!z!&hl7+k!$^ce(^43jzm8at6(xb(l=4j+$o**7@!4ko7@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost","https://social-media-site-django.herokuapp.com/"]
 
 
 # Application definition
