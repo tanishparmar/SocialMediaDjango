@@ -84,6 +84,7 @@ def wall(request):
     your_posts = request.user.post_set.all()
     for user in request.user.friends.all():
         your_posts=your_posts|user.post_set.all()
+    your_posts=your_posts.order_by("-updatedTime")
     if len(your_posts) == 0:
         messages.error(
             request, "You have no posts yet. Create your First Post")
