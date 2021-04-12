@@ -99,22 +99,24 @@ def view_404(request, *args, **kwargs):
 def user_pages(request, user_slug):
     user = User.objects.get(url=user_slug)
     is_friend=False
-    if user != request.user:
-        friend=True
-        if user in request.user.friends.all() :
-            is_friend=True
-        else:
-            is_friend=False
-    else:
-        friend=False
     user_posts = user.post_set.all()
     followers=0
     for user_guy in User.objects.all():
         if user in user_guy.friends.all():
             followers+=1
     follows=len(user.friends.all())
+    if request.user.is_authenticated:
+        if user != request.user:
+            friend=True
+            if user in request.user.friends.all() :
+                is_friend=True
+            else:
+                is_friend=False
+        else:
+            friend=False
+    else:
+        friend=False
     return render(request, "home/User.html", {"title":user.username,"this_user": user, "posts": user_posts,"friend":friend,"is_friend":is_friend,"followers":followers,"follows":follows})
-
 
 def post_pages(request, post_slug):
     post = Post.objects.get(url=post_slug)
@@ -122,8 +124,8 @@ def post_pages(request, post_slug):
 
 def search(request):
     q = request.GET["q"]
-    users = User.objects.filter(username__iexact=q) | User.objects.filter(first_name__iexact=q) | User.objects.filter(last_name__iexact=q) | User.objects.filter(email__iexact=q) | User.objects.filter(url__iexact=q) | User.objects.filter(
-        username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)
+    users = (User.objects.filter(username__iexact=q) | User.objects.filter(first_name__iexact=q) | User.objects.filter(last_name__iexact=q) | User.objects.filter(email__iexact=q) | User.objects.filter(url__iexact=q) | User.objects.filter(
+        username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)).exclude(username="admin")
     return render(request, "home/Search.html", {"title": "Search", "query": q, "result": users})
 
 def friend(request):
