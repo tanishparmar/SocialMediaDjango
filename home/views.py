@@ -1,5 +1,6 @@
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import render
-from .models import User, Post
+from .models import User, Post,Comment
 from django.contrib import auth
 from django.contrib import messages
 import string
@@ -76,6 +77,7 @@ def create(request):
                 string.ascii_letters+string.digits, k=10))
         post = Post.objects.create(
             title=title, content=content, creator=request.user, url=url)
+        post.save()
         return redirect("/wall")
     return render(request, "home/Create.html", {"title": "Create Post"})
 
@@ -119,7 +121,10 @@ def user_pages(request, user_slug):
     return render(request, "home/User.html", {"title":user.username,"this_user": user, "posts": user_posts,"friend":friend,"is_friend":is_friend,"followers":followers,"follows":follows})
 
 def post_pages(request, post_slug):
-    post = Post.objects.get(url=post_slug)
+    try:
+        post = Post.objects.get(url=post_slug)
+    except Post.DoesNotExist:
+        raise Http404()
     return render(request, "home/Post.html", {"title":post.title[:10], "post": post})
 
 def search(request):
@@ -137,3 +142,21 @@ def unfriend(request):
     username=request.POST["friend"]
     request.user.friends.remove(User.objects.get(username=username))
     return redirect("/u/"+User.objects.get(username=username).url)
+
+def comment(request):
+    if request.method=="POST":
+        content=request.POST["content"]
+        post_url=request.POST["post_url"]
+        post=Post.objects.get(url=post_url)
+        comment = Comment.objects.create(creator=request.user,parent_post=post,content=content)
+        comment.save()
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect("/")
+
+def deletep(request,post_slug):
+    post_url=request.POST["post_url"]
+    post_user=request.POST["user"]
+    if request.user.username==post_user:
+        Post.objects.get(url=post_url).delete()
+    return redirect("/u/"+request.user.url)

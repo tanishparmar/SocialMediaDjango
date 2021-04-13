@@ -11,5 +11,7 @@ urlpatterns = [
     path("p/<str:post_slug>/",views.post_pages),
     path("search/",views.search),
     path("friend/",views.friend),
-    path("unfriend/",views.unfriend)
+    path("unfriend/",views.unfriend),
+    path("comment/",views.comment),
+    path("deletep/<str:post_slug>/",views.deletep)
 ]

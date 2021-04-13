@@ -56,7 +56,7 @@ class Post(models.Model):
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True,
                           default=uuid.uuid4, editable=False)
-    creator = models.OneToOneField(
+    creator = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True)
     parent_post = models.ForeignKey(
         Post, on_delete=models.CASCADE, null=True)
