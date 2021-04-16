@@ -9,12 +9,12 @@
     {{post.createdTime|date:"DATETIME_FORMAT"}}
     ago</small>
 {%if user.is_authenticated and user == post.creator%}
-<form method="POST" action="/deletep/{{post.url}}/">
+<form method="POST" action="/deletep/">
     {% csrf_token %}
     <input type="hidden" value="{{post.url}}" name="post_url">
     <input type="hidden" value={{user}} name="user">
     <div class="form-group">
-        <button type="submit" class="btn btn-danger">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
             <i class="fas fa-trash-alt"></i>
         </button>
     </div>
@@ -27,6 +27,18 @@
 <h1>Comments:</h1>
 {%for comment in post.comment_set.all%}
 <h4>Posted By:{{comment.creator.username}}</h4>
+{%if  comment.creator == user%}
+<form method="POST" action="/deletec/">
+    {% csrf_token %}
+    <input type="hidden" value="{{comment.id}}" name="comment_id">
+    <input type="hidden" value={{user}} name="user">
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+</form>
+{%endif%}
 <h3>{{comment.content}}</h3>
 <br>
 {%endfor%}

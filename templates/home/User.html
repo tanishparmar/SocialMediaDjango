@@ -6,6 +6,18 @@
 <h1 class="bg-light text-dark">Email : {{this_user.email}}</h1>
 <h1 class="bg-light text-dark">Followers : {{followers}}</h1>
 <h1 class="bg-light text-dark">Follows : {{follows}}</h1>
+{%if user == this_user%}
+<form method="POST" action="/deleteu/">
+    {% csrf_token %}
+    <input type="hidden" value={{user}} name="user">
+    <div class="form-group">
+        <label for="submit">Delete This User : </label>
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+</form>
+{%endif%}
 {%if friend%}
 {%if not is_friend%}
 <form action="/friend/" method="post">

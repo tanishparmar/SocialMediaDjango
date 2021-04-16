@@ -16,12 +16,12 @@
                             {{post.createdTime|date:"DATETIME_FORMAT"}}</small></p>
                     <a href="/p/{{post.url}}" class="btn btn-primary">Go to Post</a>
                     {%if user.is_authenticated and user == post.creator%}
-                    <form method="POST" action="/deletep/{{post.url}}/">
+                    <form method="POST" action="/deletep/">
                         {% csrf_token %}
                         <input type="hidden" value="{{post.url}}" name="post_url">
                         <input type="hidden" value={{user}} name="user">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>

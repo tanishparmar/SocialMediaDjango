@@ -13,5 +13,7 @@ urlpatterns = [
     path("friend/",views.friend),
     path("unfriend/",views.unfriend),
     path("comment/",views.comment),
-    path("deletep/<str:post_slug>/",views.deletep)
+    path("deletep/",views.deletep),
+    path("deletec/",views.deletec),
+    path("deleteu/",views.deleteu),
 ]

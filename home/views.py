@@ -154,9 +154,25 @@ def comment(request):
     else:
         return redirect("/")
 
-def deletep(request,post_slug):
+def deletep(request):
     post_url=request.POST["post_url"]
     post_user=request.POST["user"]
     if request.user.username==post_user:
         Post.objects.get(url=post_url).delete()
     return redirect("/u/"+request.user.url)
+
+def deletec(request):
+    comment_id=request.POST["comment_id"]
+    comment_user=request.POST["user"]
+    parentpost=Comment.objects.get(id=comment_id)
+    if comment_user==request.user.username:
+        Comment.objects.get(id=comment_id).delete()
+    return redirect("/p/"+parentpost.parent_post.url)
+
+def deleteu(request):
+    delete_user=request.POST["user"]
+    delete_user=User.objects.get(username=delete_user)
+    if delete_user==request.user:
+        auth.logout(request)
+        delete_user.delete()
+    return redirect("/")
