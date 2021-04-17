@@ -15,5 +15,7 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 
 # application = get_wsgi_application()
 from django.core.wsgi import get_wsgi_application
+from whitenoise.django import DjangoWhiteNoise
 
 application = get_wsgi_application()
+application = DjangoWhiteNoise(application)
