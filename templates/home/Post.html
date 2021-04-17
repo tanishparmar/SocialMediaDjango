@@ -4,7 +4,7 @@
 <p class="card-text">Created By : {{post.creator.username}}</p>
 <small class="text-muted">Last updated {{post.updatedTime|timesince}}
     ago</small>
-<br>    
+<br>
 <small class="text-muted">Created On
     {{post.createdTime|date:"DATETIME_FORMAT"}}
     ago</small>
@@ -25,23 +25,33 @@
 <h3>{{post.content}}</h3>
 {%if post.comment_set.all%}
 <h1>Comments:</h1>
-{%for comment in post.comment_set.all%}
-<h4>Posted By:{{comment.creator.username}}</h4>
-{%if  comment.creator == user%}
-<form method="POST" action="/deletec/">
-    {% csrf_token %}
-    <input type="hidden" value="{{comment.id}}" name="comment_id">
-    <input type="hidden" value={{user}} name="user">
-    <div class="form-group">
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
-            <i class="fas fa-trash-alt"></i>
-        </button>
+<div class="row">
+    <div class="comments-list">
+        {%for comment in post.comment_set.all%}
+        <div class="media">
+            <div class="media-body">
+
+                <h4 class="media-heading user_name">{{comment.creator.username}}</h4>
+                {{comment.content}}
+
+                <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                {%if comment.creator == user%}
+                <form method="POST" action="/deletec/">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{comment.id}}" name="comment_id">
+                    <input type="hidden" value={{user}} name="user">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </form>
+                {%endif%}
+            </div>
+        </div>
+        {%endfor%}
     </div>
-</form>
-{%endif%}
-<h3>{{comment.content}}</h3>
-<br>
-{%endfor%}
+</div>
 {%else%}
 <h1>No comments yet</h1>
 {%endif%}
