@@ -83,9 +83,9 @@ def create(request):
 
 
 def wall(request):
-    your_posts = request.user.post_set.all()
+    your_posts = request.user.creator.all()
     for user in request.user.friends.all():
-        your_posts=your_posts|user.post_set.all()
+        your_posts=your_posts|user.creator.all()
     your_posts=your_posts.order_by("-updatedTime")
     if len(your_posts) == 0:
         messages.error(
@@ -101,7 +101,7 @@ def view_404(request, *args, **kwargs):
 def user_pages(request, user_slug):
     user = User.objects.get(url=user_slug)
     is_friend=False
-    user_posts = user.post_set.all()
+    user_posts = user.creator.all()
     followers=0
     for user_guy in User.objects.all():
         if user in user_guy.friends.all():
@@ -125,10 +125,12 @@ def post_pages(request, post_slug):
         post = Post.objects.get(url=post_slug)
     except Post.DoesNotExist:
         raise Http404()
-    return render(request, "home/Post.html", {"title":post.title[:10], "post": post})
+    return render(request, "home/Post.html", {"title":post.title[:10], "post": post,"likes":len(post.likers.all()),"liked":(request.user in post.likers.all())})
 
 def search(request):
     q = request.GET["q"]
+    if q=="":
+        return render(request, "home/Search.html", {"title": "Search", "query": q, "result": {}}) 
     users = (User.objects.filter(username__iexact=q) | User.objects.filter(first_name__iexact=q) | User.objects.filter(last_name__iexact=q) | User.objects.filter(email__iexact=q) | User.objects.filter(url__iexact=q) | User.objects.filter(
         username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)).exclude(username="admin")
     return render(request, "home/Search.html", {"title": "Search", "query": q, "result": users})
@@ -161,6 +163,18 @@ def deletep(request):
         Post.objects.get(url=post_url).delete()
     return redirect("/u/"+request.user.url)
 
+def likep(request):
+    post_url=request.POST["post_url"]
+    post_user=request.POST["user"]
+    liked=request.POST["liked"]=="True"
+    this_post=Post.objects.get(url=post_url)
+    if not liked:
+        print("hello")
+        this_post.likers.add(request.user)
+    else:
+        this_post.likers.remove(request.user)
+    return redirect("/p/"+post_url)
+
 def deletec(request):
     comment_id=request.POST["comment_id"]
     comment_user=request.POST["user"]
@@ -176,3 +190,6 @@ def deleteu(request):
         auth.logout(request)
         delete_user.delete()
     return redirect("/")
+
+def code(request):
+    return render(request,"home/Code.html",{"title":"Code"})

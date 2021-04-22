@@ -21,6 +21,36 @@
 </form>
 {%endif%}
 <br>
+{%if user.is_authenticated%}
+{%if user != post.creator%}
+<form method="POST" action="/likep/">
+    {% csrf_token %}
+    <input type="hidden" value="{{post.url}}" name="post_url">
+    <input type="hidden" value={{user}} name="user">
+    <input type="hidden" value={{liked}} name="liked">
+    <div class="form-group">
+        {%if not liked %}
+        <button type="submit" class="btn btn-primary">
+            Like - {{likes}}
+        </button>
+        {%else%}
+        <button type="submit" class="btn btn-danger">
+            Like - {{likes}}
+        </button>
+        {%endif%}
+    </div>
+</form>
+{%else%}
+<button class="btn btn-primary" onclick="return alert('You can\'t like your own Post');">
+    Like - {{likes}}
+</button>
+{%endif%}
+{%else%}
+<button class="btn btn-primary" onclick="return alert('You are not logged in');">
+    Like - {{likes}}
+</button>
+{%endif%}
+<br>
 <h2>Content : </h2>
 <h3>{{post.content}}</h3>
 {%if post.comment_set.all%}

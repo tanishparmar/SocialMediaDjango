@@ -43,9 +43,8 @@ class Post(models.Model):
     updatedTime = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, null=True)
     content = models.CharField(max_length=500, null=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name="creator")
+    likers=models.ManyToManyField(User,related_name="likers")
     # image/s(optional)[One to Many]
     # code(optional)[One to Many]
 
