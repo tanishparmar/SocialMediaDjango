@@ -62,8 +62,8 @@ class Comment(models.Model):
     createdTime = models.DateTimeField(auto_now_add=True)
     updatedTime = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=500, null=True)
+    likers_comment=models.ManyToManyField(User,related_name="likers_comment")
     likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
 
     def __str__(self):
         return(self.creator.full_name+" : "+self.content[:10])

@@ -165,15 +165,27 @@ def deletep(request):
 
 def likep(request):
     post_url=request.POST["post_url"]
-    post_user=request.POST["user"]
     liked=request.POST["liked"]=="True"
     this_post=Post.objects.get(url=post_url)
     if not liked:
-        print("hello")
         this_post.likers.add(request.user)
     else:
         this_post.likers.remove(request.user)
     return redirect("/p/"+post_url)
+
+def likec(request):
+    comment_id=request.POST["comment_id"]
+    post_user=request.POST["user"]
+    this_comment=Comment.objects.get(id=comment_id)
+    if User.objects.get(username=post_user) not in this_comment.likers_comment.all():
+        this_comment.likers_comment.add(User.objects.get(username=post_user))
+        this_comment.likes=len(this_comment.likers_comment.all())
+        this_comment.save()
+    else:
+        this_comment.likers_comment.remove(User.objects.get(username=post_user))
+        this_comment.likes=len(this_comment.likers_comment.all())
+        this_comment.save()
+    return redirect("/p/"+this_comment.parent_post.url)
 
 def deletec(request):
     comment_id=request.POST["comment_id"]

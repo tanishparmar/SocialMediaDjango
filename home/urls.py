@@ -17,5 +17,6 @@ urlpatterns = [
     path("deletec/",views.deletec),
     path("deleteu/",views.deleteu),
     path("code/",views.code),
-    path("likep/",views.likep)
+    path("likep/",views.likep),
+    path("likec/",views.likec)
 ]
