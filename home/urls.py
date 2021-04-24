@@ -17,6 +17,8 @@ urlpatterns = [
     path("deletec/",views.deletec),
     path("deleteu/",views.deleteu),
     path("code/",views.code),
+    path("code/compile/",views.compileCode),
+    path("code/run/",views.runCode),
     path("likep/",views.likep),
-    path("likec/",views.likec)
+    path("likec/",views.likec),
 ]

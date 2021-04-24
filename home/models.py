@@ -85,3 +85,15 @@ class Reply(models.Model):
 
     def __str__(self):
         return(self.creator.full_name+" : "+self.content[:10])
+
+# class Codes(models.Model):
+#     code_id = models.CharField()
+#     code_content = models.CharField(required=True)
+#     lang = models.CharField(required=True)
+#     code_input = models.CharField(required=True)
+#     compile_status= models.CharField(required=True)
+#     run_status_status=models.CharField(required=True)
+#     run_status_time=models.CharField(required=True)
+#     run_status_memory=models.CharField(required=True)
+#     run_status_output=models.CharField(required=True)
+#     run_status_stderr=models.CharField(required=True)
