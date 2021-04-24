@@ -44,7 +44,7 @@ $(document).ready(function(){
 	var request_ongoing = false;
 
 	// set base path of ace editor. Required by WhiteNoise
-	ace.config.set("basePath", "/static/hackIDE/ace-builds/src/");
+	ace.config.set("basePath", "/static/home/ace-builds/src/");
 	// trigger extension
 	ace.require("ace/ext/language_tools");
 	// init the editor

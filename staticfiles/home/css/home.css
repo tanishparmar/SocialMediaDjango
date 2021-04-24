@@ -2,6 +2,9 @@
 	--input-padding-x: 1.5rem;
 	--input-padding-y: 0.75rem;
 }
+html {
+	scroll-behavior: smooth;
+}
 body {
 	background: #007bff;
 	background: linear-gradient(to right, #0062e6, #33aeff);
@@ -124,10 +127,10 @@ body {
 	color: white;
 	background-color: #ea4335;
 }
-.user_name{
-    font-size:14px;
-    font-weight: bold;
+.user_name {
+	font-size: 14px;
+	font-weight: bold;
 }
-.comments-list .media{
-    border-bottom: 1px dotted #ccc;
+.comments-list .media {
+	border-bottom: 1px dotted #ccc;
 }

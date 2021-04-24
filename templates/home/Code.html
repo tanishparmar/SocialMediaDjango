@@ -56,12 +56,22 @@
                     </label>
                 </div>
             </div>
+            {%if user.is_authenticated%}
             <div class="pull-right run-save-panel">
+                <span id='copy_code'></span>
                 <button class="btn btn-info" id="compile-code" data-toggle="tooltip" data-placement="top"
                     title="Press Shift+Enter">Compile it!</button>
                 <button class="btn btn-success" id="run-code" data-toggle="tooltip" data-placement="top"
                     title="Press Ctrl+Enter">Hack(run) it!</button>
             </div>
+            {%else%}
+            <div class="pull-right run-save-panel">
+                <button class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                    title="Press Shift+Enter">Compile it!</button>
+                <button class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                    title="Press Ctrl+Enter" onclick="return alert('You are not logged in');">Hack(run) it!</button>
+            </div>
+            {%endif%}
         </div>
     </div>
     <!-- END of row -->
