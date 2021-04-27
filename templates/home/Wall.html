@@ -15,6 +15,9 @@
                     <p class="card-text"><small class="text-muted">Created On
                             {{post.createdTime|date:"DATETIME_FORMAT"}}</small></p>
                     <a href="/p/{{post.url}}" class="btn btn-primary">Go to Post</a>
+                    <button class="btn btn-primary"
+                        onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
+                            class="fas fa-share"></i> Share</button>
                     {%if user.is_authenticated and user == post.creator%}
                     <form method="POST" action="/deletep/">
                         {% csrf_token %}
@@ -26,6 +29,34 @@
                             </button>
                         </div>
                     </form>
+                    {%endif%}
+                    {%if user.is_authenticated%}
+                    {%if user != post.creator%}
+                    <form method="POST" action="/likep/">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{post.url}}" name="post_url">
+                        <input type="hidden" value={{liked}} name="liked">
+                        <div class="form-group">
+                            {%if user not in post.likers.all  %}
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                            </button>
+                            {%else%}
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                            </button>
+                            {%endif%}
+                        </div>
+                    </form>
+                    {%else%}
+                    <button class="btn btn-primary" onclick="return alert('You can\'t like your own Post');">
+                        <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                    </button>
+                    {%endif%}
+                    {%else%}
+                    <button class="btn btn-primary" onclick="return alert('You are not logged in');">
+                        <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                    </button>
                     {%endif%}
                 </div>
             </div>

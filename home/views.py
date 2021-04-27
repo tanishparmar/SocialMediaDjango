@@ -126,7 +126,7 @@ def post_pages(request, post_slug):
         post = Post.objects.get(url=post_slug)
     except Post.DoesNotExist:
         raise Http404()
-    return render(request, "home/Post.html", {"title": post.title[:10], "post": post, "likes": len(post.likers.all()), "liked": (request.user in post.likers.all())})
+    return render(request, "home/Post.html", {"title": post.title[:10], "post": post})
 
 
 def search(request):

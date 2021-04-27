@@ -15,7 +15,7 @@
     <input type="hidden" value={{user}} name="user">
     <div class="form-group">
         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
-            <i class="fas fa-trash-alt"></i>
+            <i class="fas fa-trash-alt"></i> Delete
         </button>
     </div>
 </form>
@@ -28,27 +28,28 @@
     <input type="hidden" value="{{post.url}}" name="post_url">
     <input type="hidden" value={{liked}} name="liked">
     <div class="form-group">
-        {%if not liked %}
+        {%if user not in post.likers.all  %}
         <button type="submit" class="btn btn-primary">
-            <i class="fas fa-thumbs-up"></i> {{likes}}
+            <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
         </button>
         {%else%}
         <button type="submit" class="btn btn-danger">
-            <i class="fas fa-thumbs-up"></i> {{likes}}
+            <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
         </button>
         {%endif%}
     </div>
 </form>
 {%else%}
 <button class="btn btn-primary" onclick="return alert('You can\'t like your own Post');">
-    <i class="fas fa-thumbs-up"></i> {{likes}}
+    <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
 </button>
 {%endif%}
 {%else%}
 <button class="btn btn-primary" onclick="return alert('You are not logged in');">
-    <i class="fas fa-thumbs-up"></i> {{likes}}
+    <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
 </button>
 {%endif%}
+<button class="btn btn-primary" onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i class="fas fa-share"></i>         Share</button>
 <br>
 <h2>Content : </h2>
 <h3>{{post.content}}</h3>
@@ -101,7 +102,7 @@
                     <input type="hidden" value={{user}} name="user">
                     <div class="form-group">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
-                            <i class="fas fa-trash-alt"></i>
+                            <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </div>
                 </form>
