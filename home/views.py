@@ -1,6 +1,6 @@
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import render
-from .models import User, Post, Comment
+from .models import User, Post, Comment, Images
 from django.contrib import auth
 from django.contrib import messages
 import string
@@ -70,13 +70,17 @@ def create(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
+        images = request.FILES.getlist("images")
         url = "".join(random.choices(
             string.ascii_uppercase+string.digits, k=10))
         while Post.objects.filter(url=url).exists():
             url = "".join(random.choices(
                 string.ascii_letters+string.digits, k=10))
         post = Post.objects.create(
-            title=title, content=content, creator=request.user, url=url)
+            title=title, content=content, creator=request.user, url=url)    
+        for image in images:
+            photo=Images.objects.create(post=post,image=image)
+            photo.save()
         post.save()
         return redirect("/wall")
     return render(request, "home/Create.html", {"title": "Create Post"})
@@ -173,9 +177,8 @@ def deletep(request):
 
 def likep(request):
     post_url = request.POST["post_url"]
-    liked = request.POST["liked"] == "True"
     this_post = Post.objects.get(url=post_url)
-    if not liked:
+    if request.user not in this_post.likers.all():
         this_post.likers.add(request.user)
     else:
         this_post.likers.remove(request.user)

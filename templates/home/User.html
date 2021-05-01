@@ -39,7 +39,7 @@
 <br>
 <h1 class="bg-light text-dark">POSTS</h1>
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {%for post in posts%}
+    {%for post in posts|dictsortreversed:"createdTime" %}
     <div class="col">
         <div class="card" style="color: black;">
             <div class="card-body">

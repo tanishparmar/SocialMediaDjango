@@ -1,5 +1,6 @@
 {%extends "home/base.html"%}
 {%block content%}
+{% load static %}
 <h1 class="bg-light text-dark">Title : {{post.title}}</h1>
 <p class="card-text">Created By : {{post.creator.username}}</p>
 <small class="text-muted">Last updated {{post.updatedTime|timesince}}
@@ -53,6 +54,12 @@
 <br>
 <h2>Content : </h2>
 <h3>{{post.content}}</h3>
+{%if post.images_set.all|length%}
+<h2>Images : </h2>
+{%for image in post.images_set.all%}
+<img src='/{{image.image.name|slice:"5:"}}' height="400px">
+{%endfor%}
+{%endif%}
 {%if post.comment_set.all%}
 <h1>Comments:</h1>
 <div class="row">
