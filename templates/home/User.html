@@ -6,7 +6,7 @@
 {%else%}
 <img src='/{{this_user.profile_picture.url|slice:"5:"}}' height="70px">
 {%endif%}
-{%if user==this_user%}
+{%if user == this_user %}
 <form method="POST" action="/update_dp/" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" value={{user}} name="user">

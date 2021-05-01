@@ -223,6 +223,8 @@ def update_dp(request):
     image=request.FILES.get("image")
     this_user=User.objects.get(username=user)
     if user==request.user.username:
+        if this_user.profile_picture:
+            this_user.profile_picture.delete()
         this_user.profile_picture=image
         this_user.save()
     return redirect("/u/"+this_user.url)
