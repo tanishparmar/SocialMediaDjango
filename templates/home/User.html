@@ -6,6 +6,7 @@
 {%else%}
 <img src='/{{this_user.profile_picture.url|slice:"5:"}}' height="70px">
 {%endif%}
+{%if user==this_user%}
 <form method="POST" action="/update_dp/" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" value={{user}} name="user">
@@ -15,6 +16,7 @@
         <button type="submit" class="btn btn-danger">Change        </button>
     </div>
 </form>
+{%endif%}
 <h1 class="bg-light text-dark">Username : {{this_user.username}}</h1>
 <h1 class="bg-light text-dark">First Name : {{this_user.first_name}}</h1>
 <h1 class="bg-light text-dark">Last Name : {{this_user.last_name}}</h1>
