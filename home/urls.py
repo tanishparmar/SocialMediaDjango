@@ -21,4 +21,5 @@ urlpatterns = [
     path("code/run/",views.runCode),
     path("likep/",views.likep),
     path("likec/",views.likec),
+    path("update_dp/",views.update_dp),
 ]

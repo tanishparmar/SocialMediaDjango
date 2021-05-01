@@ -9,6 +9,12 @@ body {
 	background: #007bff;
 	background: linear-gradient(to right, #0062e6, #33aeff);
 }
+.avatar {
+	vertical-align: middle;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+  }
 .errornote {
 	font-size: 14px;
 	font-weight: 700;

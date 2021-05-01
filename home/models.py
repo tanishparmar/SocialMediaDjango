@@ -31,7 +31,7 @@ class User(AbstractUser):
     like_tags = models.ManyToManyField(Like_Tags)
     dislike_tags = models.ManyToManyField(Dislike_Tags)
     friends = models.ManyToManyField("self", symmetrical=False)
-    profile_picture = models.ImageField(upload_to="home/static/home/images/profile_pics/{}/".format(username),
+    profile_picture = models.ImageField(upload_to="home/static/home/images/profile_pics/",
                               verbose_name='Image',null=True)
     def delete(self, *args, **kwargs):
         self.profile_picture.delete()

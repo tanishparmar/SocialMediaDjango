@@ -218,6 +218,14 @@ def deleteu(request):
         delete_user.delete()
     return redirect("/")
 
+def update_dp(request):
+    user=request.POST["user"]
+    image=request.FILES.get("image")
+    this_user=User.objects.get(username=user)
+    if user==request.user.username:
+        this_user.profile_picture=image
+        this_user.save()
+    return redirect("/u/"+this_user.url)
 
 def code(request):
     return render(request, "home/Code.html", {"title": "Code"})

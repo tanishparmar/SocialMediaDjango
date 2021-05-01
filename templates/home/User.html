@@ -1,5 +1,20 @@
 {%extends "home/base.html"%}
 {%block content%}
+{%load static%}
+{%if not this_user.profile_picture%}
+<img src="{%static 'home/images/default_user.png'%}" height="50px">
+{%else%}
+<img src='/{{this_user.profile_picture.url|slice:"5:"}}' height="70px">
+{%endif%}
+<form method="POST" action="/update_dp/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" value={{user}} name="user">
+    <div class="form-group">
+        <label for="image">Change Profile Picture : </label>
+        <input type="file" class="form-control-file" name="image"/>
+        <button type="submit" class="btn btn-danger">Change        </button>
+    </div>
+</form>
 <h1 class="bg-light text-dark">Username : {{this_user.username}}</h1>
 <h1 class="bg-light text-dark">First Name : {{this_user.first_name}}</h1>
 <h1 class="bg-light text-dark">Last Name : {{this_user.last_name}}</h1>
