@@ -14,27 +14,33 @@
             <ul class="navbar-nav ms-auto">
                 {%if user.is_authenticated%}
                 <li class="nav-item">
-                    <a class="nav-link {%if title == "Your Wall"%} active {%endif%}" href="/wall">Your Wall</a>
+                    <a class="nav-link {%if title == " Your Wall"%} active {%endif%}" href="/wall">Feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {%if title == "Create Post"%} active {%endif%}" href="/create">Create Post</a>
+                    <a class="nav-link {%if title == " Create Post"%} active {%endif%}" href="/create">Post
+                        Something!!</a>
                 </li>
                 {%endif%}
                 <form class="d-flex" action="/search" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search for Users" aria-label="Search" name="q">
+                    <input class="form-control me-2" type="search" placeholder="Search for Users" aria-label="Search"
+                        name="q">
                     <button class="btn btn-outline-success" type="submit">Search</button>
-                  </form>
+                </form>
+                <!----
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Dropdown link
                     </a>
+                    
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
+                
                 </li>
+            -->
                 {%if user.is_authenticated%}
                 <li class="nav-item">
                     <a class="nav-link active" href="/u/{{user.url}}">Hello, {{user.first_name}}</a>
