@@ -22,4 +22,5 @@ urlpatterns = [
     path("likep/",views.likep),
     path("likec/",views.likec),
     path("update_dp/",views.update_dp),
+    path("edit/",views.edit)
 ]

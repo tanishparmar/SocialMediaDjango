@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import render
 from .models import User, Post, Comment, Images
@@ -81,7 +82,7 @@ def create(request):
         for image in images:
             photo=Images.objects.create(post=post,image=image)
         post.save()
-        return redirect("/wall")
+        return redirect("/p/"+post.url)
     return render(request, "home/Create.html", {"title": "Create Post"})
 
 
@@ -160,7 +161,6 @@ def comment(request):
         post = Post.objects.get(url=post_url)
         comment = Comment.objects.create(
             creator=request.user, parent_post=post, content=content)
-        comment.save()
         return redirect(request.META.get('HTTP_REFERER'))
     else:
         return redirect("/")
@@ -227,6 +227,32 @@ def update_dp(request):
         this_user.profile_picture=image
         this_user.save()
     return redirect("/u/"+this_user.url)
+
+def edit(request):
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+        images = request.FILES.getlist("images")
+        post_url = request.POST["post_url"]
+        post = Post.objects.get(url=post_url)
+        post.title=title
+        post.content=content
+        post.images_set.all().delete()  
+        for image in images:
+            photo=Images.objects.create(post=post,image=image)
+        post.save()
+        return redirect("/p/"+post_url)
+    else:
+        if request.GET:
+            this_user=request.GET["user"]
+            post_url=request.GET["post_url"]
+            post=Post.objects.get(url=post_url)
+            if request.user.username==this_user:
+                return render(request,"home/Create.html",{"title":"Edit Post","post":post})
+            else:
+                return redirect("/create/")
+        else:
+            return redirect("/create/")
 
 def code(request):
     return render(request, "home/Code.html", {"title": "Code"})
