@@ -1,5 +1,23 @@
 {%extends "home/base.html"%}
 {%block content%}
+<style>
+    .card {
+        background-color: white;
+        color: black;
+        border: px solid blue;
+        margin: 10px;
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    #delete-button {
+        position: absolute;
+
+        top: 86.5%;
+        right: 5%;
+        width: 10%;
+        transform: translateY(-50%);
+    }
+</style>
 {%load static%}
 {%if not this_user.profile_picture%}
 <img src="{%static 'home/images/default_user.png'%}" height="50px">
@@ -61,7 +79,7 @@
         <div class="card" style="color: black;">
             <div class="card-body">
                 <h5 class="card-title">{{post.title}}</h5>
-                <p class="card-text">{{post.content}}</p>
+                <p class="card-text">{{post.content|truncatechars:79}}</p>
                 <p class="card-text">Created By : {{post.creator.username}}</p>
                 <p class="card-text"><small class="text-muted">Last updated {{post.updatedTime|timesince}}
                         ago</small></p>
@@ -76,7 +94,7 @@
                     {% csrf_token %}
                     <input type="hidden" value="{{post.url}}" name="post_url">
                     <input type="hidden" value={{user}} name="user">
-                    <div class="form-group">
+                    <div class="form-group" id="delete-button">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>

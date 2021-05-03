@@ -14,11 +14,13 @@
             <ul class="navbar-nav ms-auto">
                 {%if user.is_authenticated%}
                 <li class="nav-item">
-                    <a class="nav-link {%if title == " Your Wall"%} active {%endif%}" href="/wall">Feed</a>
+                    <a class="nav-link {%if title == "Your Wall"%} active {%endif%}" href="/wall">Feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {%if title == " Create Post"%} active {%endif%}" href="/create">Post
-                        Something!!</a>
+                    <a class="nav-link {%if title == "Create Post"%} active {%endif%}" href="/create">Create Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {%if title == "Code"%} active {%endif%}" href="/code">Code</a>
                 </li>
                 {%endif%}
                 <form class="d-flex" action="/search" method="get">
@@ -43,10 +45,11 @@
             -->
                 {%if user.is_authenticated%}
                 <li class="nav-item">
-                    <a class="nav-link active" href="/u/{{user.url}}">Hello, {{user.first_name}}</a>
+                    <a class="nav-link active" href="/u/{{user.url}}">{{user.first_name}}'s Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/logout">Logout</a>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='/logout'">Logout</button>
+                    <!-- <a class="nav-link active" href="/logout">Logout</a> -->
                 </li>
                 {%endif%}
             </ul>
