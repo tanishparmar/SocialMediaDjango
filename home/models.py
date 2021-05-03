@@ -55,15 +55,11 @@ class Post(models.Model):
 
     def __str__(self):
         return(self.title)
-        
-def get_image_filename(instance, filename):
-    id = instance.post.id
-    return "home/static/home/images/post_images/{}{}".format(id,filename)  
 
 
 class Images(models.Model):
     post = models.ForeignKey(Post, default=None,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=get_image_filename,
+    image = models.ImageField(upload_to="home/static/home/images/post_images/",
                               verbose_name='Image')
     def delete(self, *args, **kwargs):
         self.image.delete()

@@ -80,7 +80,6 @@ def create(request):
             title=title, content=content, creator=request.user, url=url)    
         for image in images:
             photo=Images.objects.create(post=post,image=image)
-            photo.save()
         post.save()
         return redirect("/wall")
     return render(request, "home/Create.html", {"title": "Create Post"})
