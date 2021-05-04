@@ -1,5 +1,6 @@
 {%extends "home/base.html"%}
 {%block content%}
+{%load static%}
 <style>
     .card {
         background-color: white;
@@ -26,6 +27,12 @@
         width: 10%;
         transform: translateY(-50%);
     }
+    .crops {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 </style>
 <div class="container-fluid bg-light text-dark">
     <h1>Posts</h1>
@@ -36,7 +43,11 @@
                 <div class="card-body">
                     <h5 class="card-title">{{post.title}}</h5>
                     <p class="card-text">{{post.content|truncatechars:79}}</p>
-                    <p class="card-text">Created By : {{post.creator.username}}</p>
+                    <p class="card-text">Created By : {%if not post.creator.profile_picture%}
+                        <img class="crops" src="{%static 'home/images/default_user.png'%}">
+                        {%else%}
+                        <img class="crops" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
+                        {%endif%}{{post.creator.username}}</p>
                     <p class="card-text"><small class="text-muted">Last updated {{post.updatedTime|timesince}}
                             ago</small></p>
                     <p class="card-text"><small class="text-muted">Created On

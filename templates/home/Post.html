@@ -1,8 +1,21 @@
 {%extends "home/base.html"%}
 {%block content%}
 {% load static %}
+<style>
+    .crops {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
 <h1 class="bg-light text-dark">Title : {{post.title}}</h1>
-<p class="card-text">Created By : {{post.creator.username}}</p>
+<p class="card-text">Created By : 
+    {%if not post.creator.profile_picture%}
+    <img class="crops" src="{%static 'home/images/default_user.png'%}">
+    {%else%}
+    <img class="crops" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
+    {%endif%}{{post.creator.username}}</p>
 <small class="text-muted">Last updated {{post.updatedTime|timesince}}
     ago</small>
 <br>
@@ -77,7 +90,11 @@
         <div class="media">
             <div class="media-body">
 
-                <h4 class="media-heading user_name">{{comment.creator.username}}</h4>
+                <h4 class="media-heading user_name">{%if not comment.creator.profile_picture%}
+                    <img class="crops" src="{%static 'home/images/default_user.png'%}" height="50px">
+                    {%else%}
+                    <img class="crops" src='/{{comment.creator.profile_picture.url|slice:"5:"}}' height="70px">
+                    {%endif%}{{comment.creator.username}}</h4>
                 {{comment.content}}
 
                 <!-- Comment like starts -->

@@ -1,14 +1,34 @@
 {%extends "home/base.html"%}
 {%block content%}
+{% load static %}
+<style>
+  .crops {
+      width: 20px;
+      height: 20px;
+      object-fit: cover;
+      border-radius: 50%;
+  }
+</style>
 <h1 class="bg-white text-dark">Search for "{{query}}"</h1>
 {%for user in result%}
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{user.username}}</h5>
+      <h5 class="card-title">
+        {%if not user.profile_picture%}
+        <img class="crops" src="{%static 'home/images/default_user.png'%}">
+        {%else%}
+        <img class="crops" src='/{{user.profile_picture.url|slice:"5:"}}'>
+        {%endif%}
+        {{user.username}}</h5>
       <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
       <p class="card-text">{{user.email}}</p>
       <a href="/u/{{user.url}}" class="btn btn-primary">Go to User</a>
     </div>
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
 {%endfor%}
+
 {%endblock%}
