@@ -7,6 +7,7 @@ from django.contrib import messages
 import string
 import random
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -141,19 +142,19 @@ def search(request):
         username__icontains=q) | User.objects.filter(first_name__icontains=q) | User.objects.filter(last_name__icontains=q) | User.objects.filter(email__icontains=q) | User.objects.filter(url__icontains=q)).exclude(username="admin")
     return render(request, "home/Search.html", {"title": "Search", "query": q, "result": users})
 
-
+@login_required
 def friend(request):
     username = request.POST["friend"]
     request.user.friends.add(User.objects.get(username=username))
     return redirect("/u/"+User.objects.get(username=username).url)
 
-
+@login_required
 def unfriend(request):
     username = request.POST["friend"]
     request.user.friends.remove(User.objects.get(username=username))
     return redirect("/u/"+User.objects.get(username=username).url)
 
-
+@login_required
 def comment(request):
     if request.method == "POST":
         content = request.POST["content"]
@@ -165,7 +166,7 @@ def comment(request):
     else:
         return redirect("/")
 
-
+@login_required
 def deletep(request):
     post_url = request.POST["post_url"]
     post_user = request.POST["user"]
@@ -173,7 +174,7 @@ def deletep(request):
         Post.objects.get(url=post_url).delete()
     return redirect("/u/"+request.user.url)
 
-
+@login_required
 def likep(request):
     post_url = request.POST["post_url"]
     this_post = Post.objects.get(url=post_url)
@@ -183,7 +184,7 @@ def likep(request):
         this_post.likers.remove(request.user)
     return redirect("/p/"+post_url)
 
-
+@login_required
 def likec(request):
     comment_id = request.POST["comment_id"]
     post_user = request.POST["user"]
@@ -199,7 +200,7 @@ def likec(request):
         this_comment.save()
     return redirect("/p/"+this_comment.parent_post.url)
 
-
+@login_required
 def deletec(request):
     comment_id = request.POST["comment_id"]
     comment_user = request.POST["user"]
@@ -208,7 +209,7 @@ def deletec(request):
         Comment.objects.get(id=comment_id).delete()
     return redirect("/p/"+parentpost.parent_post.url)
 
-
+@login_required
 def deleteu(request):
     delete_user = request.POST["user"]
     delete_user = User.objects.get(username=delete_user)
@@ -217,6 +218,7 @@ def deleteu(request):
         delete_user.delete()
     return redirect("/")
 
+@login_required
 def update_dp(request):
     user=request.POST["user"]
     image=request.FILES.get("image")
@@ -228,31 +230,122 @@ def update_dp(request):
         this_user.save()
     return redirect("/u/"+this_user.url)
 
+@login_required
 def edit(request):
     if request.method == "POST":
-        title = request.POST["title"]
-        content = request.POST["content"]
-        images = request.FILES.getlist("images")
-        post_url = request.POST["post_url"]
-        post = Post.objects.get(url=post_url)
-        post.title=title
-        post.content=content
-        post.images_set.all().delete()  
-        for image in images:
-            photo=Images.objects.create(post=post,image=image)
-        post.save()
-        return redirect("/p/"+post_url)
+        this_user=request.POST["user"]
     else:
-        if request.GET:
-            this_user=request.GET["user"]
-            post_url=request.GET["post_url"]
-            post=Post.objects.get(url=post_url)
-            if request.user.username==this_user:
+        this_user=request.GET["user"]
+    if request.user.is_authenticated and request.user.username==this_user:
+        if request.method == "POST":
+            title = request.POST["title"]
+            content = request.POST["content"]
+            images = request.FILES.getlist("images")
+            post_url = request.POST["post_url"]
+            post = Post.objects.get(url=post_url)
+            post.title=title
+            post.content=content
+            post.images_set.all().delete()  
+            for image in images:
+                photo=Images.objects.create(post=post,image=image)
+            post.save()
+            return redirect("/p/"+post_url)
+        else:
+            if request.GET:
+                post_url=request.GET["post_url"]
+                post=Post.objects.get(url=post_url)
                 return render(request,"home/Create.html",{"title":"Edit Post","post":post})
             else:
                 return redirect("/create/")
+    else:
+        return redirect("/")
+
+@login_required
+def editc(request):
+    if request.method == "POST":
+        this_user=request.POST["user"]
+    else:
+        this_user=request.GET["user"]
+    if request.user.is_authenticated and request.user.username==this_user:
+        if request.method == "POST":
+            comment_id=request.POST["comment_id"]
+            content=request.POST["content"]
+            comment=Comment.objects.get(id=comment_id)
+            comment.content=content
+            comment.save()
+            return redirect("/p/"+comment.parent_post.url)
         else:
-            return redirect("/create/")
+            if request.GET:
+                comment_id=request.GET["comment_id"]
+                comment=Comment.objects.get(id=comment_id)
+                return render(request,"home/EditComment.html",{"title":"Edit Post","comment":comment})
+            else:
+                return redirect("/")
+    else:
+        return redirect("/")
+
+@login_required
+def editu(request):
+    if request.method == "POST":
+        this_user=request.POST["user"]
+    else:
+        this_user=request.GET["user"]
+    if request.user.is_authenticated and request.user.username==this_user:
+        if request.method == "POST":
+            this_user=User.objects.get(username=this_user)
+            first_name=request.POST["first_name"]
+            last_name=request.POST["last_name"]
+            username=request.POST["username"]
+            email=request.POST["email"]
+            password=request.POST["password"]
+            confirmPassword=request.POST["confirmPassword"]
+            image=request.FILES.get("image")
+            if not first_name:
+                messages.error(request, "First Name not set. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not last_name:
+                messages.error(request, "Last Name not set. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not username:
+                messages.error(request, "Username not set. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if User.objects.filter(username=username) and username!=this_user.username:
+                messages.error(request, "Username already exists. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not email:
+                messages.error(request, "Email not set. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not password:
+                messages.error(request, "Password not set. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not confirmPassword:
+                messages.error(request, "Please fill in the Confirm Password and try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if password!=confirmPassword:
+                messages.error(request, "Passwords don't match. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            if not image:
+                messages.error(request, "Profile Picture not specified. Please try again.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":this_user})
+            this_user.first_name=first_name
+            this_user.last_name=last_name
+            this_user.email=email
+            this_user.username=username
+            this_user.set_password(password)
+            this_user.profile_picture.delete()
+            this_user.profile_picture=image
+            this_user.save()
+            user=auth.authenticate(username=username, password=password)
+            auth.login(request, user)
+            return redirect("/u/"+this_user.url)
+        else:
+            if request.GET:
+                messages.error(request, "Username Taken. User Not Created.")
+                return render(request,"home/EditUser.html",{"title":"Edit User","this_user":User.objects.get(username=this_user)})
+            else:
+                return redirect("/")
+    else:
+        return redirect("/")
 
 def code(request):
     return render(request, "home/Code.html", {"title": "Code"})

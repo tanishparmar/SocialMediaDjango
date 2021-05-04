@@ -69,11 +69,11 @@
 <img src='/{{image.image.name|slice:"5:"}}' height="400px">
 {%endfor%}
 {%endif%}
-{%if post.comment_set.all%}
+{%if post.parent_post.all%}
 <h1>Comments:</h1>
 <div class="row">
     <div class="comments-list">
-        {%for comment in post.comment_set.all%}
+        {%for comment in post.parent_post.all%}
         <div class="media">
             <div class="media-body">
 
@@ -112,6 +112,15 @@
                 <!-- Comment like ends -->
 
                 {%if comment.creator == user%}
+                <form method="GET" action="/editc/">
+                    <input type="hidden" value="{{comment.id}}" name="comment_id">
+                    <input type="hidden" value={{user}} name="user">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="far fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </form>
                 <form method="POST" action="/deletec/">
                     {% csrf_token %}
                     <input type="hidden" value="{{comment.id}}" name="comment_id">

@@ -70,9 +70,9 @@ class Comment(models.Model):
     id = models.UUIDField(primary_key=True,
                           default=uuid.uuid4, editable=False)
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True)
+        User, on_delete=models.CASCADE, null=True,related_name="creator_comment")
     parent_post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, null=True)
+        Post, on_delete=models.CASCADE, null=True,related_name="parent_post")
     createdTime = models.DateTimeField(auto_now_add=True)
     updatedTime = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=500, null=True)

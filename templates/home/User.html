@@ -42,6 +42,14 @@
 <h1 class="bg-light text-dark">Followers : {{followers}}</h1>
 <h1 class="bg-light text-dark">Follows : {{follows}}</h1>
 {%if user == this_user%}
+<form method="GET" action="/editu/">
+    <input type="hidden" value={{user}} name="user">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?');">
+            <i class="fas fa-edit"></i> Edit User
+        </button>
+    </div>
+</form>
 <form method="POST" action="/deleteu/">
     {% csrf_token %}
     <input type="hidden" value={{user}} name="user">
@@ -85,7 +93,7 @@
                         ago</small></p>
                 <p class="card-text"><small class="text-muted">Created On
                         {{post.createdTime|date:"DATETIME_FORMAT"}}</small></p>
-                <a href="/p/{{post.url}}" class="btn btn-primary">Go to Post</a>
+                <a href="/p/{{post.url}}" class="btn btn-primary">See More>></a>
                 <button class="btn btn-primary"
                     onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
                         class="fas fa-share"></i> Share</button>
