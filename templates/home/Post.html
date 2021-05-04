@@ -78,9 +78,22 @@
 <h3>{{post.content}}</h3>
 {%if post.images_set.all|length%}
 <h2>Images : </h2>
-{%for image in post.images_set.all%}
-<img src='/{{image.image.name|slice:"5:"}}' height="400px">
-{%endfor%}
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+    {%for image in post.images_set.all%}
+    <div {% if forloop.first %} class="carousel-item active" {% else %} class="carousel-item" {% endif %}>
+        <img src='/{{image.image.url|slice:"5:"}}' height="400px">
+    </div>
+    {%endfor%}
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 {%endif%}
 {%if post.parent_post.all%}
 <h1>Comments:</h1>
