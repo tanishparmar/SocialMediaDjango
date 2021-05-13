@@ -50,8 +50,8 @@ class Post(models.Model):
     content = models.CharField(max_length=500, null=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name="creator")
     likers=models.ManyToManyField(User,related_name="likers")
-    # image/s(optional)[One to Many]
-    # code(optional)[One to Many]
+    code=models.TextField(null=True)
+    lang=models.CharField(null=True,max_length=10)
 
     def __str__(self):
         return(self.title)

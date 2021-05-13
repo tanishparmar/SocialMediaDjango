@@ -9,7 +9,7 @@
         border-radius: 50%;
     }
 </style>
-<h1 class="bg-light text-dark">Title : {{post.title}}</h1>
+<h1 class="bg-light text-dark">{{post.title}}</h1>
 <p class="card-text">Created By : 
     {%if not post.creator.profile_picture%}
     <img class="crops" src="{%static 'home/images/default_user.png'%}">

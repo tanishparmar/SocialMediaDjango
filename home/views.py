@@ -72,14 +72,19 @@ def create(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        images = request.FILES.getlist("images")
+        source=request.POST["source"]
+        lang=request.POST["lang"]
+        images=[]
+        for i in range(len(request.FILES)):
+            images.append(request.FILES["image"+str(i)])
+        print(images)
         url = "".join(random.choices(
             string.ascii_uppercase+string.digits, k=10))
         while Post.objects.filter(url=url).exists():
             url = "".join(random.choices(
                 string.ascii_letters+string.digits, k=10))
         post = Post.objects.create(
-            title=title, content=content, creator=request.user, url=url)    
+            title=title, content=content, creator=request.user, url=url,code=source,lang=lang)    
         for image in images:
             photo=Images.objects.create(post=post,image=image)
         post.save()
@@ -469,10 +474,10 @@ def runCode(request):
             }
 
             # if input is present in the request
-            code_input = ""
+            # code_input = ""
             if 'input' in request.POST:
                 run_data['input'] = request.POST['input']
-                code_input = run_data['input']
+                # code_input = run_data['input']
 
             """
       Make call to /run/ endpoint of HackerEarth API
@@ -480,48 +485,11 @@ def runCode(request):
       """
             r = requests.post(RUN_URL, data=run_data)
             r = r.json()
-            cs = ""
-            rss = ""
-            rst = ""
-            rsm = ""
-            rso = ""
-            rsstdr = ""
-            try:
-                cs = r['compile_status']
-            except:
-                pass
-            try:
-                rss = r['run_status']['status']
-            except:
-                pass
-            try:
-                rst = r['run_status']['time_used']
-            except:
-                pass
-            try:
-                rsm = r['run_status']['memory_used']
-            except:
-                pass
-            try:
-                rso = r['run_status']['output_html']
-            except:
-                pass
-            try:
-                rsstdr = r['run_status']['stderr']
-            except:
-                pass
 
             # code_response = codes.objects.create(
             #     code_id=r['code_id'],
             #     code_content=source,
-            #     lang=lang,
-            #     code_input=code_input,
-            #     compile_status=cs,
-            #     run_status_status=rss,
-            #     run_status_time=rst,
-            #     run_status_memory=rsm,
-            #     run_status_output=rso,
-            #     run_status_stderr=rsstdr
+            #     lang=lang
             # )
             # code_response.save()
             return JsonResponse(r, safe=False)
