@@ -78,8 +78,8 @@
     .form-group3 {
         position: absolute;
 
-        top: 82.5%;
-        right: 82.5%;
+        top: 50%;
+        right: 30%;
         width: 10%;
         transform: translateY(-50%);
     }
@@ -94,10 +94,14 @@
 
 </style>
 {%load static%}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
 {%if not this_user.profile_picture%}
 <img class = crop src="{%static 'home/images/default_user.png'%}" height="50px">
 {%else%}
 <img class = crop src='/{{this_user.profile_picture.url|slice:"5:"}}' height="70px">
+
 {%endif%}
 {%if user == this_user %}
 <form method="POST" action="/update_dp/" enctype="multipart/form-data">
@@ -106,16 +110,19 @@
     <div class="form-group1">
         <label for="image">Change Profile Picture : </label>
         <input type="file" class="form-control-file" name="image"/>
-        <button type="submit" class="btn btn-danger">Change        </button>
+        <button type="submit" class="btn btn-danger">Change</button>
     </div>
 </form>
 {%endif%}
+</div>
+<div class="col-md-6">
 <h1 class="bg-light text-dark">Username : {{this_user.username}}</h1>
 <h1 class="bg-light text-dark">First Name : {{this_user.first_name}}</h1>
 <h1 class="bg-light text-dark">Last Name : {{this_user.last_name}}</h1>
 <h1 class="bg-light text-dark">Email : {{this_user.email}}</h1>
 <h1 class="bg-light text-dark">Followers : {{followers}}</h1>
 <h1 class="bg-light text-dark">Follows : {{follows}}</h1>
+
 {%if user == this_user%}
 <form method="GET" action="/editu/">
     <input type="hidden" value={{user}} name="user">
@@ -136,6 +143,7 @@
     </div>
 </form>
 {%endif%}
+
 {%if friend%}
 {%if not is_friend%}
 <form action="/friend/" method="post">
@@ -154,8 +162,16 @@
 <button class="btn btn-primary"
     onclick="copyToClipboard(window.location.href.split('/')[2]+'/u/'+'{{this_user.url}}'+'/')"><i
         class="fas fa-share"></i> Share Profile</button>
+
+</div>
+</div>
+</div>
+
 <br>
-<h1 class="bg-light text-dark">POSTS</h1>
+
+
+
+<!-- <h1 class="bg-light text-dark">POSTS</h1>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {%for post in posts|dictsortreversed:"createdTime" %}
     <div class="col">
@@ -221,6 +237,6 @@
             </div>
         </div>
     </div>
-    {%endfor%}
-</div>
+    {%endfor%} -->
+
 {%endblock%}
