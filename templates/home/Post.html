@@ -66,13 +66,13 @@
 
             #form-groupa {
                 position: absolute;
-                left: 20%;
+                left: 21.5%;
                 width: 10%;
             }
 
             #form-groupb {
                 position: absolute;
-                left: 25%;
+                left: 26.5%;
                 width: 10%;
             }
 
@@ -142,7 +142,7 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     {%for image in post.images_set.all%}
-                    <div {% if forloop.first %} class="carousel-item active" {% else %} class="carousel-item" {% endif %}>
+                    <div {% if forloop.first %} class="carousel-item active" {% else %} class="carousel-item" {% endif%}>
                         <img src='/{{image.image.url|slice:"5:"}}' height="787.5px" width="1300px">
                     </div>
                     {%endfor%}
@@ -219,7 +219,6 @@
                                 <input type="hidden" value={{liked}} name="liked">
                                 <div class="form-group">
                                     {%if user not in post.likers.all %}
-                                    <div class="form-group"></div>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
                                     </button>
@@ -228,179 +227,172 @@
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
                                 </button>
-                                {%endif%}
-                            </form>
-                            {%else%}
-                            <button class="btn btn-primary" onclick="return alert('You can\'t like your own Post');">
-                                <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
-                            </button>
-                            {%endif%}
-                            {%else%}
-                            <button class="btn btn-primary" onclick="return alert('You are not logged in');">
-                                <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
-                            </button>
-                            {%endif%}
-
                         </div>
-                        <div class="col-md-2" id="form-groupa">
-                            <div class="form-group6">
-                                <button class="btn btn-primary"
-                                    onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
-                                        class="fas fa-share"></i> Share</button>
-                            </div>
-                        </div>
-                        <div class="col-md-1" id="form-groupb">
-                            <div class="form-group5">
-                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample"
-                                    role="button" aria-expanded="false" aria-controls="collapseExample"
-                                    style='color:white!important'>
-                                    Comments
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </p>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                        <!-- // Your Code for Comments -->
-                        {%if post.parent_post.all%}
-                        <h1>Comments:</h1>
-                        <div class="row">
-                            <div class="comments-list">
-                                {%for comment in post.parent_post.all%}
-                                <div class="media">
-                                    <div class="media-body">
-                                        <a href="/u/{{comment.creator.url}}">
-                                            <h4 class="media-heading user_name">
-                                                {%if not comment.creator.profile_picture%}
-                                                <img class="crops" src="{%static 'home/images/default_user.png'%}"
-                                                    height="50px">
-                                                {%else%}
-                                                <img class="crops"
-                                                    src='/{{comment.creator.profile_picture.url|slice:"5:"}}'
-                                                    height="70px">
-                                                {%endif%}{{comment.creator.username}}
-                                            </h4>
-                                        </a>
-                                        {{comment.content}}
-
-                                        <!-- Comment like starts -->
-                                        {%if user.is_authenticated%}
-                                        {%if user != comment.creator%}
-                                        <form method="POST" action="/likec/">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{comment.id}}" name="comment_id">
-                                            <input type="hidden" value={{user}} name="user">
-                                            <div class="form-group">
-                                                {%if user not in comment.likers_comment.all %}
-
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                                </button>
-
-                                                {%else%}
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                                </button>
-                                                {%endif%}
-                                            </div>
-                                        </form>
-                                        {%else%}
-                                        <button class="btn btn-primary"
-                                            onclick="return alert('You can\'t like your own Comment');">
-                                            <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                        </button>
-                                        {%endif%}
-                                        {%else%}
-                                        <button class="btn btn-primary"
-                                            onclick="return alert('You are not logged in');">
-                                            <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                        </button>
-                                        {%endif%}
-                                        <!-- Comment like ends -->
-
-                                        {%if comment.creator == user%}
-                                        <form method="GET" action="/editc/">
-                                            <input type="hidden" value="{{comment.id}}" name="comment_id">
-                                            <input type="hidden" value={{user}} name="user">
-                                            <div class="form-group">
-                                                <div class="form-group7">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <i class="far fa-edit"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <form method="POST" action="/deletec/">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{comment.id}}" name="comment_id">
-                                            <input type="hidden" value={{user}} name="user">
-                                            <div class="form-group">
-                                                <div class="form-group8">
-                                                    <button type="submit" class="btn btn-primary"
-                                                        onclick="return confirm('Are you sure?');">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        {%endif%}
-                                    </div>
-                                </div>
-                                {%endfor%}
-                            </div>
-                        </div>
-                        {%else%}
-                        <h1>No comments yet</h1>
                         {%endif%}
-                        {%if user.is_authenticated%}
+                        </form>
+                        {%else%}
+                        <button class="btn btn-primary" onclick="return alert('You can\'t like your own Post');">
+                            <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                        </button>
+                        {%endif%}
+                        {%else%}
+                        <button class="btn btn-primary" onclick="return alert('You are not logged in');">
+                            <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
+                        </button>
+                        {%endif%}
+                    </div>
+                    <div class="col-md-2" id="form-groupa">
+                        <button class="btn btn-primary"
+                            onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
+                                class="fas fa-share"></i> Share</button>
+                    </div>
+                    <div class="col-md-1" id="form-groupb">
+                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                            aria-expanded="false" aria-controls="collapseExample" style='color:white!important'>
+                            Comments
+                        </a>
                     </div>
                 </div>
-
-                <a href="/u/{{post.creator.url}}">
-                    <p class="card-text">Created By :
-                        {%if not post.creator.profile_picture%}
-                        <img class="crops" src="{%static 'home/images/default_user.png'%}">
-                        {%else%}
-                        <img class="crops" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
-                        {%endif%}{{post.creator.username}}
-                    </p>
-                </a>
-                <small class="text-muted">Last updated {{post.updatedTime|timesince}}
-                    ago</small>
-                <br>
-                <small class="text-muted">Created On
-                    {{post.createdTime|date:"DATETIME_FORMAT"}}
-                    ago</small>
-                {%else%}
-
-                <h3>You need to be logged in to comment.</h3>
-                {%endif%}
-                {%if user.is_authenticated%}
-                <div class="bg-white">
-                    <h3>Comment:</h3>
-                    <form method="POST" action="/comment/" class=>
-                        {% csrf_token %}
-                        <input type="hidden" value="{{post.url}}" name="post_url">
-                        <div class="form-group">
-                            <label for="content">Comment <span class="require">*</span></label>
-                            <textarea rows="5" class="form-control" name="content"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <p><span class="require">*</span> - required fields</p>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                Comment
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                {%endif%}
             </div>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <!-- // Your Code for Comments -->
+                    {%if post.parent_post.all%}
+                    <h1>Comments:</h1>
+                    <div class="row">
+                        <div class="comments-list">
+                            {%for comment in post.parent_post.all%}
+                            <div class="media">
+                                <div class="media-body">
+                                    <a href="/u/{{comment.creator.url}}">
+                                        <h4 class="media-heading user_name">
+                                            {%if not comment.creator.profile_picture%}
+                                            <img class="crops" src="{%static 'home/images/default_user.png'%}"
+                                                height="50px">
+                                            {%else%}
+                                            <img class="crops" src='/{{comment.creator.profile_picture.url|slice:"5:"}}'
+                                                height="70px">
+                                            {%endif%}{{comment.creator.username}}
+                                        </h4>
+                                    </a>
+                                    {{comment.content}}
+
+                                    <!-- Comment like starts -->
+                                    {%if user.is_authenticated%}
+                                    {%if user != comment.creator%}
+                                    <form method="POST" action="/likec/">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{comment.id}}" name="comment_id">
+                                        <input type="hidden" value={{user}} name="user">
+                                        <div class="form-group">
+                                            {%if user not in comment.likers_comment.all %}
+
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                            </button>
+
+                                            {%else%}
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                            </button>
+                                            {%endif%}
+                                        </div>
+                                    </form>
+                                    {%else%}
+                                    <button class="btn btn-primary"
+                                        onclick="return alert('You can\'t like your own Comment');">
+                                        <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                    </button>
+                                    {%endif%}
+                                    {%else%}
+                                    <button class="btn btn-primary" onclick="return alert('You are not logged in');">
+                                        <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                    </button>
+                                    {%endif%}
+                                    <!-- Comment like ends -->
+
+                                    {%if comment.creator == user%}
+                                    <form method="GET" action="/editc/">
+                                        <input type="hidden" value="{{comment.id}}" name="comment_id">
+                                        <input type="hidden" value={{user}} name="user">
+                                        <div class="form-group">
+                                            <div class="form-group7">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form method="POST" action="/deletec/">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{comment.id}}" name="comment_id">
+                                        <input type="hidden" value={{user}} name="user">
+                                        <div class="form-group">
+                                            <div class="form-group8">
+                                                <button type="submit" class="btn btn-primary"
+                                                    onclick="return confirm('Are you sure?');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    {%endif%}
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                    {%else%}
+                    <h1>No comments yet</h1>
+                    {%endif%}
+                    {%if user.is_authenticated%}
+                </div>
+            </div>
+
+            <a href="/u/{{post.creator.url}}">
+                <p class="card-text">Created By :
+                    {%if not post.creator.profile_picture%}
+                    <img class="crops" src="{%static 'home/images/default_user.png'%}">
+                    {%else%}
+                    <img class="crops" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
+                    {%endif%}{{post.creator.username}}
+                </p>
+            </a>
+            <small class="text-muted">Last updated {{post.updatedTime|timesince}}
+                ago</small>
+            <br>
+            <small class="text-muted">Created On
+                {{post.createdTime|date:"DATETIME_FORMAT"}}
+                ago</small>
+            {%else%}
+
+            <h3>You need to be logged in to comment.</h3>
+            {%endif%}
+            {%if user.is_authenticated%}
+            <div class="bg-white">
+                <h3>Comment:</h3>
+                <form method="POST" action="/comment/" class=>
+                    {% csrf_token %}
+                    <input type="hidden" value="{{post.url}}" name="post_url">
+                    <div class="form-group">
+                        <label for="content">Comment <span class="require">*</span></label>
+                        <textarea rows="5" class="form-control" name="content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <p><span class="require">*</span> - required fields</p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            Comment
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {%endif%}
         </div>
     </div>
+</div>
 
 </div>
 <script src="{% static 'home/js/jquery.min.js' %}" type="text/javascript" charset="utf-8"></script>
