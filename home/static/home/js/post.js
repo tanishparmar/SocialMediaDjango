@@ -10,7 +10,6 @@ $(document).ready(function () {
 	var indentSpaces = 4;
 
 	// HackerEarth API endpoints
-	var COMPILE_URL = "compile/";
 	var RUN_URL = "run/";
 
 	//Language Boilerplate Codes
@@ -252,6 +251,7 @@ $(document).ready(function () {
 		});
 	}
 	// when run-code is clicked
+	$(".output-response-box").hide();
 	$("#run-code").click(function () {
 		runCode();
 		window.location='/'

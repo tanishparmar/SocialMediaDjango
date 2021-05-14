@@ -362,7 +362,12 @@ def editu(request):
         return redirect("/")
 
 def code(request):
-    return render(request, "home/Code.html", {"title": "Code"})
+    if request.GET:
+        post_url=request.GET["post_url"]
+        post=Post.objects.get(url=post_url)
+        return render(request, "home/Code.html", {"title": "Code","code_content":post.code,"lang":post.lang})  
+    else:
+        return render(request, "home/Code.html", {"title": "Code"})
 
 
 # Writing the code for executing code

@@ -114,15 +114,15 @@ $(document).ready(function(){
 	function checkForInitialData() {
 		var code_content = document.getElementById('saved_code_content').value;
 		var code_lang = document.getElementById('saved_code_lang').value;
-		var code_input = document.getElementById('saved_code_input').value;
+		// var code_input = document.getElementById('saved_code_input').value;
 		if(code_content != "" && code_content != undefined && code_content != null) {
 			languageSelected = code_lang;
 			$('option:selected')[0].selected = false;
 			$("option[value='"+code_lang+"']")[0].selected = true;
 			editor.setValue(code_content);
-			$(".output-i").html(code_input);
-			$('#custom-input').val(code_input);
-			showResultBox();
+			// $(".output-i").html(code_input);
+			// $('#custom-input').val(code_input);
+			// showResultBox();
 		}
 	}
 
