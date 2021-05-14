@@ -136,7 +136,10 @@ def post_pages(request, post_slug):
         post = Post.objects.get(url=post_slug)
     except Post.DoesNotExist:
         raise Http404()
-    return render(request, "home/Post.html", {"title": post.title[:10], "post": post})
+    if post.code:
+        return render(request, "home/Post.html", {"title": "View Post", "post": post,"code_content":post.code,"lang":post.lang})
+    else:
+        return render(request, "home/Post.html", {"title": "View Post", "post": post})
 
 
 def search(request):
