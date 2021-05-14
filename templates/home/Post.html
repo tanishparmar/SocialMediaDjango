@@ -12,7 +12,7 @@
         border-radius: 50%;
     }
     .crops1 {
-        width: 548x;
+        width: 48x;
         height: 48px;
         object-fit: cover;
         border-radius: 50%;
@@ -20,7 +20,7 @@
     .form-group2 {
         position: absolute;
         z-index:1;
-        top: 14%;
+        top: 13.40%;
         right: 10%;
         width: 10%;
         transform: translateY(-50%);
@@ -29,8 +29,44 @@
     .form-group3 {
         position: absolute;
 
-        top: 14%;
+        top: 13.40%;
         right: 15%;
+        width: 10%;
+        transform: translateY(-50%);
+    }
+
+    .form-group5 {
+        position: absolute;
+
+        top: 111.55%;
+        left: 19.80%;
+        width: 10%;
+        transform: translateY(-50%);
+    }
+
+    .form-group6 {
+        position: absolute;
+
+        top: 111.55%;
+        left: 26.10%;
+        width: 10%;
+        transform: translateY(-50%);
+    }
+
+    .form-group7 {
+        position: absolute;
+
+        top: 22.65%;
+        left: 20.45%;
+        width: 10%;
+        transform: translateY(-50%);
+    }
+
+    .form-group8 {
+        position: absolute;
+
+        top: 22.65%;
+        left: 24.34%;
         width: 10%;
         transform: translateY(-50%);
     }
@@ -146,7 +182,9 @@
     <i class="fas fa-thumbs-up"></i> {{post.likers.all|length}}
 </button>
 {%endif%}
+<div class="form-group6">
 <button class="btn btn-primary" onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i class="fas fa-share"></i>         Share</button>
+</div>
 <br>
 <br>
 {%if post.code%}
@@ -189,8 +227,17 @@
 </div>
 {%endif%}
 <br>
-
-{%if post.parent_post.all%}
+<p>
+    <div class="form-group5">
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Comments
+    </a>
+    </div>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <!-- // Your Code for Comments -->
+      {%if post.parent_post.all%}
 <h1>Comments:</h1>
 <div class="row">
     <div class="comments-list">
@@ -214,9 +261,11 @@
                     <input type="hidden" value={{user}} name="user">
                     <div class="form-group">
                         {%if user not in comment.likers_comment.all %}
+                        
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-thumbs-up"></i> {{comment.likes}}
                         </button>
+                    
                         {%else%}
                         <button type="submit" class="btn btn-danger">
                             <i class="fas fa-thumbs-up"></i> {{comment.likes}}
@@ -241,9 +290,11 @@
                     <input type="hidden" value="{{comment.id}}" name="comment_id">
                     <input type="hidden" value={{user}} name="user">
                     <div class="form-group">
+                        <div class="form-group7">
                         <button type="submit" class="btn btn-primary" >
                             <i class="far fa-edit"></i> 
                         </button>
+                    </div>
                     </div>
                 </form>
                 <form method="POST" action="/deletec/">
@@ -251,9 +302,11 @@
                     <input type="hidden" value="{{comment.id}}" name="comment_id">
                     <input type="hidden" value={{user}} name="user">
                     <div class="form-group">
+                        <div class="form-group8">
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?');">
                             <i class="fas fa-trash-alt"></i> 
                         </button>
+                    </div>
                     </div>
                 </form>
                 {%endif%}
@@ -283,6 +336,9 @@
         </button>
     </div>
 </form>
+    </div>
+  </div>
+
 
 <p class="card-text">Created By : 
     {%if not post.creator.profile_picture%}
