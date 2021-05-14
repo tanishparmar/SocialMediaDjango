@@ -38,17 +38,18 @@
     #horizontal-line{
         width:1400px;
         height: 1px;
-        background-color: grey;
+        background-color: 	#D3D3D3;
 
     }
-
-   
-
- 
+    #horizontal-line1{
+        width:1400px;
+        height: 1px;
+        background-color: 	#D3D3D3;
+    }
 
 </style>
 
-<!-- <h1 class="bg-light text-dark">Title : {{post.title}}</h1> -->
+
 
 {%if user.is_authenticated and user == post.creator%}
 <form method="GET" action="/edit/">
@@ -67,7 +68,7 @@
     <input type="hidden" value="{{post.url}}" name="post_url">
     <input type="hidden" value={{user}} name="user">
     <div class="form-group3">
-        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?');">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
             <i class="fas fa-trash-alt"></i> Delete
         </button>
     </div>
@@ -85,6 +86,10 @@
 <br>
 <br>
 <div id="horizontal-line"></div>
+
+<h1 class="bg-light text-dark"> {{post.title}}</h1>
+
+<div id="horizontal-line1"></div>
 <!-- <h2>Content : </h2> -->
 <h3>{{post.content}}</h3>
 {%if post.images_set.all|length%}
