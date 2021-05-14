@@ -35,6 +35,13 @@
         transform: translateY(-50%);
     }
 
+    #horizontal-line{
+        width:1400px;
+        height: 1px;
+        background-color: grey;
+
+    }
+
    
 
  
@@ -62,7 +69,7 @@
     <input type="hidden" value="{{post.url}}" name="post_url">
     <input type="hidden" value={{user}} name="user">
     <div class="form-group3">
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?');">
             <i class="fas fa-trash-alt"></i> Delete
         </button>
     </div>
@@ -75,6 +82,9 @@
     <img class="crops1" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
     {%endif%}{{post.creator.username}}</p>
 </div>
+<br>
+<br>
+<div id="horizontal-line"></div>
 <!-- <h2>Content : </h2> -->
 <h3>{{post.content}}</h3>
 {%if post.images_set.all|length%}
