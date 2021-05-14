@@ -66,7 +66,6 @@
     /*for dp*/
     .form-group1 {
         position: absolute;
-
         top: 37%;
         right: 55%;
         width: 10%;
@@ -86,7 +85,7 @@
     /*for edit*/
     .form-group3 {
         position: absolute;
-
+        z-index:1;
         top: 28%;
         right: 32%;
         width: 10%;
@@ -142,7 +141,7 @@
                 <div class="form-group1">
                     <label for="image">Change Profile Picture : </label>
                     <input type="file" class="form-control-file" name="image" />
-                    <button type="submit" class="btn btn-primary">Change</button>
+                    <button type="submit" class="btn btn-danger">Change</button>
 
                 </div>
             </form>
@@ -171,7 +170,7 @@
                 <input type="hidden" value={{user}} name="user">
                 <div class="form-group2">
                     <label for="submit"></label>
-                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?');">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">
                         <i class="fas fa-trash-alt"></i> Delete Account
                     </button>
                 </div>
