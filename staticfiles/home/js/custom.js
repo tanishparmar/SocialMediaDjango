@@ -1,11 +1,3 @@
-/*
-* @Author: sahildua2305
-* @Date:   2016-01-06 01:50:10
-* @Last Modified by:   Sahil Dua
-* @Last Modified time: 2016-08-13 13:13:25
-*/
-
-
 $(document).ready(function(){
 
 	// contents of the editor at any step
@@ -401,10 +393,10 @@ $(document).ready(function(){
 				success: function(response){
 					request_ongoing = false;
 
-					if(location.port == "")
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
-					else
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
+					// if(location.port == "")
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
+					// else
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
 
 					$('#copy_code').css({'display': 'initial'});
 

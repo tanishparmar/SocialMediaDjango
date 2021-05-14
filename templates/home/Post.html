@@ -19,7 +19,7 @@
     }
     .form-group2 {
         position: absolute;
-
+        z-index:1;
         top: 14%;
         right: 10%;
         width: 10%;
@@ -62,8 +62,6 @@
     </div>
 </form>
 
-{%endif%}
-
 <form method="POST" action="/deletep/">
     {% csrf_token %}
     <input type="hidden" value="{{post.url}}" name="post_url">
@@ -74,6 +72,8 @@
         </button>
     </div>
 </form>
+
+{%endif%}
 
 <div class="form-group4">
 <p class="card-text">{%if not post.creator.profile_picture%}
@@ -110,7 +110,6 @@
 
 {%endif%}
 </div>
-
 <br>
 {%if user.is_authenticated%}
 {%if user != post.creator%}
@@ -144,8 +143,47 @@
 {%endif%}
 <button class="btn btn-primary" onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i class="fas fa-share"></i>         Share</button>
 <br>
-
-
+<br>
+{%if post.code%}
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+<input type="hidden" id='saved_code_content' value="{{ code_content }}" />
+<input type="hidden" id='saved_code_lang' value="{{ lang }}" />
+<input type="hidden" id='saved_code_input' value="{{ inp }}" />
+<div class="container">
+    <div class="row">
+        <div class="left col-md-12">
+            <div id="editor-topbar">
+                <div class="lang-choose">
+                    <select class="form-control" name="lang" id="lang">
+                        <option value="C">C (gcc 4.8.1)</option>
+                        <option value="CPP" selected>C++ (g++ 4.8.1)</option>
+                        <option value="CSHARP">C#</option>
+                        <option value="CLOJURE">Clojure (clojure 1.1.0)</option>
+                        <option value="CSS">CSS</option>
+                        <option value="HASKELL">Haskell (ghc 7.4.1)</option>
+                        <option value="JAVA">Java (openjdk 1.7.0_09)</option>
+                        <option value="JAVASCRIPT">JavaScript</option>
+                        <option value="OBJECTIVEC">Objective-C (clang 3.3)</option>
+                        <option value="PERL">Perl (perl 5.14.2)</option>
+                        <option value="PHP">PHP (php 5.3.10)</option>
+                        <option value="PYTHON">Python (python 2.7.3)</option>
+                        <option value="R">R (RScript 2.14.1)</option>
+                        <option value="RUBY">Ruby (ruby 2.1.1)</option>
+                        <option value="RUST">Rust (rustc 1.4.0)</option>
+                        <option value="SCALA">Scala (scalac 2.9.1)</option>
+                    </select>
+                </div>
+                <!-- END of lang-choose -->
+            </div>
+            <!-- END of editor-topbar -->
+            <pre id="editor"></pre>
+            <div id="editor-statusbar"></div>
+        </div>
+        <div class="right col-md-4">
+    </div>
+</div>
+{%endif%}
+<br>
 
 {%if post.parent_post.all%}
 <h1>Comments:</h1>
@@ -259,5 +297,12 @@
 
 <h3>You need to be logged in to comment.</h3>
 {%endif%}
+<script src="{% static 'home/js/jquery.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/js/view.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/js/FileSaver.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/js/jszip.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/js/bootstrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/ace-builds/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/ace-builds/src/ext-statusbar.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'home/ace-builds/src/ext-language_tools.js' %}" type="text/javascript" charset="utf-8"></script>
 {%endblock%}
-

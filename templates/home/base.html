@@ -14,7 +14,7 @@
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/home.css' %}">
     <!-- Stylesheets -->
-    {%if title == "Code" %}
+    {%if title == "Code" or title == "Create Post" or title == "Edit Post" or title == "View Post" %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/custom.css' %}" />
     {%endif%}
 </head>
