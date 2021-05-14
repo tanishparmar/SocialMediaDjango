@@ -1,3 +1,7 @@
+@font-face {
+	font-family: DAGGERSQUARE;
+	src: url(../fonts/DAGGERSQUARE.otf);
+}
 :root {
 	--input-padding-x: 1.5rem;
 	--input-padding-y: 0.75rem;
@@ -8,6 +12,11 @@ html {
 body {
 	background: #007bff;
 	background: linear-gradient(to right, #0062e6, #33aeff);
+}
+.navbar-brand{
+	font-family: DAGGERSQUARE;
+	font-size: 40px;
+	margin-left: 10px;
 }
 .avatar {
 	vertical-align: middle;

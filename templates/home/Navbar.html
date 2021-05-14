@@ -4,7 +4,7 @@
         <a class="navbar-brand" href="/">
             <img src="{%static 'home/images/Logo.jpg'%}" width="45" alt=""
                 class="rounded-circle d-inline-block align-middle pr-2">
-            Codegrad
+            CodeNShare
         </a>
         <button class=" navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
             -->
                 {%if user.is_authenticated%}
                 <li class="nav-item">
-                    <a class="nav-link active" href="/u/{{user.url}}">{{user.first_name}}'s Profile</a>
+                    <a class="nav-link active" href="/u/{{user.url}}" id="nav-username">{{user.first_name}}'s Profile</a>
                 </li>
                 <li class="nav-item">
                     <button type="button" class="btn btn-danger" onclick="window.location.href='/logout'">Logout</button>

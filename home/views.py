@@ -248,11 +248,17 @@ def edit(request):
         if request.method == "POST":
             title = request.POST["title"]
             content = request.POST["content"]
-            images = request.FILES.getlist("images")
+            source=request.POST["source"]
+            lang=request.POST["lang"]
+            images=[]
+            for i in range(len(request.FILES)):
+                images.append(request.FILES["image"+str(i)])
             post_url = request.POST["post_url"]
             post = Post.objects.get(url=post_url)
             post.title=title
             post.content=content
+            post.code=source
+            post.lang=lang
             post.images_set.all().delete()  
             for image in images:
                 photo=Images.objects.create(post=post,image=image)
@@ -262,7 +268,7 @@ def edit(request):
             if request.GET:
                 post_url=request.GET["post_url"]
                 post=Post.objects.get(url=post_url)
-                return render(request,"home/Create.html",{"title":"Edit Post","post":post})
+                return render(request,"home/Create.html",{"title":"Edit Post","post":post,"code_content":post.code,"lang":post.lang})
             else:
                 return redirect("/create/")
     else:

@@ -111,7 +111,6 @@ $(document).ready(function () {
 
 		// if code_id present in url and update run URL
 		// if (window.location.href.includes("code_id")) {
-		// 	RUN_URL = "/../run/";
 		// }
 
 		request_ongoing = true;
@@ -121,12 +120,20 @@ $(document).ready(function () {
 		run_data.append("csrfmiddlewaretoken", csrf_token);
 		run_data.append("title", title);
 		run_data.append("content", content);
+		if ($("#run-code").text().trim()=="Create"){
+			RUN_URL="/create/"
+		}
+		else{
+			RUN_URL="/edit/"
+			run_data.append("user",document.getElementById("this_user").value);
+			run_data.append("post_url",document.getElementById("post_url").value);
+		}
 		for (i = 0; i < images.length; i++) {
 			run_data.append("image"+i,images[i])
 		}
 		// AJAX r	equest to Django for running code with input
 		$.ajax({
-			url: "/create/",
+			url: RUN_URL,
 			type: "POST",
 			data: run_data,
 			enctype: "multipart/form-data",
@@ -247,6 +254,7 @@ $(document).ready(function () {
 	// when run-code is clicked
 	$("#run-code").click(function () {
 		runCode();
+		window.location='/'
 	});
 	$("#lang").change(function(){
 
