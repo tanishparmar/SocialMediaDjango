@@ -43,16 +43,18 @@
                 <div class="card-body">
                     <h5 class="card-title">{{post.title}}</h5>
                     <p class="card-text">{{post.content|truncatechars:79}}</p>
+                    <a href="/u/{{post.creator.url}}">
                     <p class="card-text">Created By : {%if not post.creator.profile_picture%}
                         <img class="crops" src="{%static 'home/images/default_user.png'%}">
                         {%else%}
                         <img class="crops" src='/{{post.creator.profile_picture.url|slice:"5:"}}'>
                         {%endif%}{{post.creator.username}}</p>
+                    </a>
                     <p class="card-text"><small class="text-muted">Last updated {{post.updatedTime|timesince}}
                             ago</small></p>
                     <p class="card-text"><small class="text-muted">Created On
                             {{post.createdTime|date:"DATETIME_FORMAT"}}</small></p>
-                    <a href="/p/{{post.url}}" class="btn btn-primary">See More>></a>
+                    <a href="/p/{{post.url}}" class="btn btn-primary" style='color:white!important'>See More>></a>
                     <button class="btn btn-primary"
                         onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
                             class="fas fa-share"></i> Share</button>

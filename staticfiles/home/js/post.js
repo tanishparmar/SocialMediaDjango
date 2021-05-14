@@ -91,7 +91,7 @@ $(document).ready(function () {
 		editorContent = editor.getValue();
 		title = document.getElementById("title").value;
 		content = document.getElementById("content").value;
-		images = document.getElementById("images").value;
+		images = $("#images").prop("files");
 	}
 	function runCode() {
 		// if a run request is ongoing
@@ -99,7 +99,6 @@ $(document).ready(function () {
 
 		// hide previous compile/output results
 		$(".output-response-box").hide();
-
 
 		// disable button when this method is called
 		$("#compile-code").prop("disabled", true);
@@ -115,24 +114,25 @@ $(document).ready(function () {
 		// 	RUN_URL = "/../run/";
 		// }
 
-		var input_given = $("#custom-input").val();
-
 		request_ongoing = true;
-		var run_data = {
-			source: editorContent,
-			lang: languageSelected,
-			title: title,
-			content: content,
-			images: images,
-		};
-		// AJAX request to Django for running code with input
+		var run_data = new FormData();
+		run_data.append("source", editorContent);
+		run_data.append("lang", languageSelected);
+		run_data.append("csrfmiddlewaretoken", csrf_token);
+		run_data.append("title", title);
+		run_data.append("content", content);
+		for (i = 0; i < images.length; i++) {
+			run_data.append("image"+i,images[i])
+		}
+		// AJAX r	equest to Django for running code with input
 		$.ajax({
-			url: "/create",
+			url: "/create/",
 			type: "POST",
 			data: run_data,
 			enctype: "multipart/form-data",
-			dataType: "json",
 			timeout: 10000,
+			processData: false,
+			contentType: false,
 			success: function (response) {
 				request_ongoing = false;
 
@@ -142,7 +142,6 @@ $(document).ready(function () {
 				// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
 
 				$("#copy_code").css({ display: "initial" });
-
 
 				// enable button when this method is called
 				$("#compile-code").prop("disabled", false);
@@ -214,7 +213,6 @@ $(document).ready(function () {
 			error: function (error) {
 				request_ongoing = false;
 
-
 				// enable button when this method is called
 				$("#compile-code").prop("disabled", false);
 				$("#run-code").prop("disabled", false);
@@ -249,5 +247,21 @@ $(document).ready(function () {
 	// when run-code is clicked
 	$("#run-code").click(function () {
 		runCode();
+	});
+	$("#lang").change(function(){
+
+		languageSelected = $("#lang").val();
+
+		// update the language (mode) for the editor
+		if(languageSelected == "C" || languageSelected == "CPP"){
+			editor.getSession().setMode("ace/mode/c_cpp");
+		}
+		else{
+			editor.getSession().setMode("ace/mode/" + languageSelected.toLowerCase());
+		}
+
+		//Change the contents to the boilerplate code
+		editor.setValue(langBoilerplate[languageSelected]);
+
 	});
 });
