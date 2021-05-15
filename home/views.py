@@ -101,7 +101,7 @@ def wall(request):
         messages.error(
             request, "You have no posts yet. Create your First Post")
         return redirect("/create")
-    return render(request, "home/Wall.html", {"your_posts": your_posts, "title": "Your Wall"})
+    return render(request, "home/Wall.html", {"your_posts": your_posts, "title": "Your Feed"})
 
 
 def view_404(request, *args, **kwargs):
