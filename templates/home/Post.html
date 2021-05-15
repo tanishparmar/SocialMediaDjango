@@ -46,24 +46,6 @@
                 transform: translateY(-50%);
             }
 
-            .form-group7 {
-                position: absolute;
-
-                top: 22.65%;
-                left: 20.45%;
-                width: 10%;
-                transform: translateY(-50%);
-            }
-
-            .form-group8 {
-                position: absolute;
-
-                top: 22.65%;
-                left: 24.34%;
-                width: 10%;
-                transform: translateY(-50%);
-            }
-
             #form-groupa {
                 position: absolute;
                 left: 21.5%;
@@ -73,7 +55,18 @@
             #form-groupb {
                 position: absolute;
                 left: 26.5%;
+                width: 11%;
+            }
+            #form-groupc {
+                position: absolute;
+                left: 7%;
                 width: 10%;
+            }
+
+            #form-groupd {
+                position: absolute;
+                left: 11%;
+                width: 11%;
             }
 
             #horizontal-line {
@@ -246,14 +239,14 @@
                         </div>
                         {%endif%}
                     <div class="col-md-2" id="form-groupa">
-                        <button class="btn btn-primary"
+                        <button type="button" class="btn btn-primary"
                             onclick="copyToClipboard(window.location.href.split('/')[2]+'/p/'+'{{post.url}}'+'/')"><i
                                 class="fas fa-share"></i> Share</button>
                     </div>
                     <div class="col-md-1" id="form-groupb">
                         <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
                             aria-expanded="false" aria-controls="collapseExample" style='color:white!important'>
-                            Comments
+                            <i class="fas fa-comment-alt"></i> Comments
                         </a>
                     </div>
                     
@@ -286,7 +279,10 @@
 
                                     <!-- Comment like starts -->
                                     {%if user.is_authenticated%}
+                                    <div class="container">
+                                        <div class="row">
                                     {%if user != comment.creator%}
+                                            <div class="col-md-1">
                                     <form method="POST" action="/likec/">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{comment.id}}" name="comment_id">
@@ -305,20 +301,26 @@
                                             {%endif%}
                                         </div>
                                     </form>
+                                    </div>
                                     {%else%}
-                                    <button class="btn btn-primary"
-                                        onclick="return alert('You can\'t like your own Comment');">
-                                        <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                    </button>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-primary"
+                                            onclick="return alert('You can\'t like your own Comment');">
+                                            <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                        </button>
+                                </div>
                                     {%endif%}
                                     {%else%}
-                                    <button class="btn btn-primary" onclick="return alert('You are not logged in');">
-                                        <i class="fas fa-thumbs-up"></i> {{comment.likes}}
-                                    </button>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-primary" onclick="return alert('You are not logged in');">
+                                            <i class="fas fa-thumbs-up"></i> {{comment.likes}}
+                                        </button>
+                                    </div>
                                     {%endif%}
                                     <!-- Comment like ends -->
 
                                     {%if comment.creator == user%}
+                                    <div class="col-md-1" id="form-groupc">
                                     <form method="GET" action="/editc/">
                                         <input type="hidden" value="{{comment.id}}" name="comment_id">
                                         <input type="hidden" value={{user}} name="user">
@@ -330,6 +332,8 @@
                                             </div>
                                         </div>
                                     </form>
+                                </div>
+                                <div class="col-md-1" id="form-groupd">
                                     <form method="POST" action="/deletec/">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{comment.id}}" name="comment_id">
@@ -343,7 +347,11 @@
                                             </div>
                                         </div>
                                     </form>
+                                    </div>
                                     {%endif%}
+                                    
+                                </div>
+                            </div>
                                 </div>
                             </div>
                             {%endfor%}
@@ -352,10 +360,11 @@
                     {%else%}
                     <h1>No comments yet</h1>
                     {%endif%}
+                    
                     {%if user.is_authenticated%}
+
                 </div>
             </div>
-
             <a href="/u/{{post.creator.url}}">
                 <p class="card-text">Created By :
                     {%if not post.creator.profile_picture%}
