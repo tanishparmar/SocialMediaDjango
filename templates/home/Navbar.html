@@ -14,7 +14,7 @@
             <ul class="navbar-nav ms-auto">
                 {%if user.is_authenticated%}
                 <li class="nav-item">
-                    <a class="nav-link {%if title == "Your Wall"%} active {%endif%}" href="/wall">Feed</a>
+                    <a class="nav-link {%if title == "Your Feed"%} active {%endif%}" href="/wall">Feed</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {%if title == "Create Post"%} active {%endif%}" href="/create">Create Post</a>
